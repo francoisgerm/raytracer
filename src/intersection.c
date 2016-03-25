@@ -85,19 +85,18 @@ int isInFacet (point a, facet f) {
         double prod = dotProduct (f.n, b);
         prod = 0.0;
 
-        if ( prod == 0.0) { // a = alpha * f.u + beta * f.v
+        if ( fabs(prod) < 10e-7) { // a = alpha * f.u + beta * f.v
             vector u = ptsToVect (f.a, f.b);
             vector v = ptsToVect (f.a, f.c);
 
-            double beta = (dotProduct (a, v) - dotProduct (v, u)/dotProduct(u,u) * dotProduct(a, u)) / (dotProduct(v,v) - dotProduct(u,v)*dotProduct(u,v)/dotProduct(u,u));
-            double alpha = (dotProduct (a,u) - beta * dotProduct(u,v))/ dotProduct(u,u);
+            double beta = (dotProduct (b, v) - dotProduct (v, u)/dotProduct(u,u) * dotProduct(b, u)) / (dotProduct(v,v) - dotProduct(u,v)*dotProduct(u,v)/dotProduct(u,u));
+            double alpha = (dotProduct (b,u) - beta * dotProduct(u,v))/ dotProduct(u,u);
 
             printf ("alpha : %f\nbeta : %f\n", alpha, beta);
             if (0 <= alpha && alpha <= 1 && 0 <= beta && beta <= 1 && alpha + beta <= 1)
                 return 1;
         } else {
             printf ("dotPro : %f\n", dotProduct(f.n, b));
-            printf("yoloo") ;
         }
 
         return 0;
