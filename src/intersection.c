@@ -16,12 +16,15 @@ facet createFacet (point a, point b, point c) {
 point computeIntersection (ray incident_r, facet f){
 
         if (dotProduct(incident_r.v, f.n) == 0) {
-                printf("lolilol");
+            printf ("Ray doesn't intersect the facet, returning origin");
+
+            point intersection;
+            intersection.x = 0;
+            intersection.y = 0;
+            intersection.z = 0;
+
+            return intersection;
         }
-        point intersection;
-        intersection.x = 0;
-        intersection.y = 0;
-        intersection.z = 0;
 
         // r = ray vector ; p(r) = point ; a in f ; u & v vectors of f
         // solve : p(r) + t.r = a + alpha*u + beta*v
@@ -33,6 +36,19 @@ point computeIntersection (ray incident_r, facet f){
         double t, alpha, beta;
         t = - dotProduct(n, ptsToVect(f.a, incident_r.o)) / dotProduct(n, incident_r.v);
 
+        point intersection = vSum(incident_r.o, eDot(t, incident_r.v));
+
+        if (isInFacet (intersection, f))
+            return intersection;
+        else {
+            printf ("Ray doesn't intersect the facet, returning origin");
+
+            intersection.x = 0;
+            intersection.y = 0;
+            intersection.z = 0;
+
+            return intersection;
+        }
  /*       alpha = dotProduct(crossProduct(ptsToVect(f.a, incident_r.o), v), incident_r.v) / dotProduct(n, incident_r.v);
         beta = dotProduct(crossProduct(u, ptsToVect(f.a, incident_r.o)), incident_r.v) / dotProduct(n, incident_r.v);
 
@@ -52,7 +68,7 @@ point computeIntersection (ray incident_r, facet f){
         } else {
          //       printf ("No intersection point. Returning origin");
         }
-    */            intersection = vSum(incident_r.o, eDot(t, incident_r.v));
+    */            
         
 
   //      point intersection_bis = vSum(f.a, vSum(eDot(alpha, u), eDot(beta, v)));
@@ -66,15 +82,21 @@ point computeIntersection (ray incident_r, facet f){
 int isInFacet (point a, facet f) {
         // first of we check that a is in the extended plane
         point b = ptsToVect (f.a, a);
-        if (dotProduct (f.n, b) == 0) { // a = alpha * f.u + beta * f.v
-            point u = ptsToVect (f.a, f.b);
-            point v = ptsToVect (f.a, f.c);
+        double prod = dotProduct (f.n, b);
+        prod = 0.0;
+
+        if ( prod == 0.0) { // a = alpha * f.u + beta * f.v
+            vector u = ptsToVect (f.a, f.b);
+            vector v = ptsToVect (f.a, f.c);
 
             double beta = (dotProduct (a, v) - dotProduct (v, u)/dotProduct(u,u) * dotProduct(a, u)) / (dotProduct(v,v) - dotProduct(u,v)*dotProduct(u,v)/dotProduct(u,u));
             double alpha = (dotProduct (a,u) - beta * dotProduct(u,v))/ dotProduct(u,u);
 
+            printf ("alpha : %f\nbeta : %f\n", alpha, beta);
             if (0 <= alpha && alpha <= 1 && 0 <= beta && beta <= 1 && alpha + beta <= 1)
                 return 1;
+        } else {
+            printf ("dotPro : %f\n", dotProduct(f.n, b));
         }
 
         return 0;
