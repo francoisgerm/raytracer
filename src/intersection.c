@@ -64,7 +64,18 @@ point computeIntersection (ray incident_r, facet f){
 
 
 int isInFacet (point a, facet f) {
-        printf ("your turn, Gaël ! \n");
+        // first of we check that a is in the extended plane
+        point b = ptsToVect (f.a, a);
+        if (dotProduct (f.n, b) == 0) { // a = alpha * f.u + beta * f.v
+            point u = ptsToVect (f.a, f.b);
+            point v = ptsToVect (f.a, f.c);
+
+            double beta = (dotProduct (a, v) - dotProduct (v, u)/dotProduct(u,u) * dotProduct(a, u)) / (dotProduct(v,v) - dotProduct(u,v)*dotProduct(u,v)/dotProduct(u,u));
+            double alpha = (dotProduct (a,u) - beta * dotProduct(u,v))/ dotProduct(u,u);
+
+            if (0 <= alpha && alpha <= 1 && 0 <= beta && beta <= 1 && alpha + beta <= 1)
+                return 1;
+        }
 
         return 0;
 }
