@@ -48,4 +48,3 @@ int isInFacet (point a, facet f) {
         printf ("your turn, Gaël !");
         return 0;
 }
-}
