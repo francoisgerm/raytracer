@@ -3,6 +3,9 @@
 
 #define EPSILON (0.00001)
 
+#include "../include/includes.h"
+#include <math.h>
+
 /*
  * Les couleurs en coordonnées RGB
  */
@@ -59,5 +62,14 @@ typedef struct sscene {
   source s;
 } scene;
 
-#endif // __GEOMETRY_H__
 
+
+vector crossProduct (vector a, vector b);
+double dotProduct (vector a, vector b);
+vector normalize (vector v);
+vector vSum (vector u, vector v);
+vector eDot (double k, vector u);
+vector ptsToVect (point a, point b);
+
+
+#endif // __GEOMETRY_H__
