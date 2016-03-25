@@ -83,7 +83,6 @@ int isInFacet (point a, facet f) {
         // first of we check that a is in the extended plane
         point b = ptsToVect (f.a, a);
         double prod = dotProduct (f.n, b);
-        prod = 0.0;
 
         if ( fabs(prod) < 10e-7) { // a = alpha * f.u + beta * f.v
             vector u = ptsToVect (f.a, f.b);
