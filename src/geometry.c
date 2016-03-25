@@ -44,7 +44,3 @@ vector ptsToVect (point a, point b) {
         return vSum(b, eDot(-1, a));
 }
 
-int isInFacet (point a, facet f) {
-        printf ("your turn, Gaël !");
-        return 0;
-}
