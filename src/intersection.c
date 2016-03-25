@@ -63,13 +63,13 @@ point computeIntersection (ray incident_r, facet f){
         printf ("%f\n ", dotProduct(f.n, ptsToVect(f.a, incident_r.o)) );*/
 /*
         if (t >=0 && 0 <= alpha && alpha <= 1 && 0 <= beta && beta <= 1) {
-            
+
                 intersection = vSum(incident_r.o, eDot(t, incident_r.v));
         } else {
          //       printf ("No intersection point. Returning origin");
         }
-    */            
-        
+    */
+
 
   //      point intersection_bis = vSum(f.a, vSum(eDot(alpha, u), eDot(beta, v)));
 //        printf ("\nintersection : %f %f %f \n", intersection_bis.x, intersection_bis.y, intersection_bis.z);
@@ -97,6 +97,7 @@ int isInFacet (point a, facet f) {
                 return 1;
         } else {
             printf ("dotPro : %f\n", dotProduct(f.n, b));
+            printf("yoloo") ;
         }
 
         return 0;
