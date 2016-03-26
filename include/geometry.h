@@ -71,5 +71,5 @@ vector vSum (vector u, vector v);
 vector eDot (double k, vector u);
 vector ptsToVect (point a, point b);
 
-
+void printfPoint (char* name, point a);
 #endif // __GEOMETRY_H__

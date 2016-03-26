@@ -41,6 +41,9 @@ vector vSum (vector u, vector v) {
 }
 
 vector ptsToVect (point a, point b) {
-        return vSum(b, eDot(-1, a));
+        return vSum(b, eDot(-1.0, a));
 }
 
+void printfPoint (char* name, point a) {
+        printf ("%s | x : %f ; y : %f ; z : %f\n",name,  a.x, a.y, a.z);
+}
