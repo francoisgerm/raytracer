@@ -1,4 +1,4 @@
-#include "../include/includes.h"
+#include "includes.h"
 
 facet createFacet (point a, point b, point c) {
         facet new_facet;

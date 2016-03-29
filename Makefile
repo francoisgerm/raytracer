@@ -1,4 +1,4 @@
-GCC        = gcc
+GCC        = gcc -lm
 MACHINE   := $(shell uname -sm | sed 's/[/\ ]/-/g')
 CFLAGS     = -Iinclude -Wall
 SDL_CFLAGS = `sdl-config --cflags`
@@ -12,12 +12,12 @@ EXEC_NOTE  = test_note
 
 # Mettre ici le nom de tous les fichiers à compiler (sans oublier src/ devant
 # *chaque* objet)
-SOURCES    = # src/geometry.c par exemple
+SOURCES    = src/*.c # src/geometry.c par exemple
 OBJECTS    = $(patsubst src/%.c, bin/%.o, $(SOURCES))
 
 # Rajouter ici le nom des objets contenant les fichiers à *tester* (sans oublier
 # bin/ devant *chaque* objet .o)
-TESTS_NOTE = tests/tests_notes.c # bin/geometry.o par exemple
+TESTS_NOTE = tests/tests_notes.c src/*.c # bin/geometry.o par exemple
 TESTS_SDL  = tests/tests_imgsdl.c $(LIBIMGSDL)
 # Vous pouvez rajouter ici d'autres variables contenant les objets nécessaires
 # aux tests que vous écrirez

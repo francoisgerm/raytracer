@@ -1,7 +1,7 @@
 #ifndef __INTERSECTION_H__
 #define __INTERSECTION_H__
 
-#include "../include/includes.h"
+#include "includes.h"
 
 /*
  * Cette fonction attendue par les tests notés doit créer une facette avec les
