@@ -1,4 +1,5 @@
-#include "includes.h"
+#include "intersection.h"
+#include <stdio.h>
 
 facet createFacet (point a, point b, point c) {
         facet new_facet;

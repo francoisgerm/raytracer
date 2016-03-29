@@ -1,4 +1,6 @@
-#include "includes.h"
+#include "geometry.h"
+
+#include <stdio.h>
 
 
 vector crossProduct (vector a, vector b) {
