@@ -28,6 +28,7 @@ typedef struct sfacet {
   double k; // coefficient de réflexion
   color cp;
   vector n;
+	char* name;
 } facet;
 
 /*
