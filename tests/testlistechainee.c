@@ -2,6 +2,8 @@
 #include "flist.h"
 #include "geometry.h"
 #include "intersection.h"
+#include "misc.h"
+#include "moveRay.h"
 #include <stdio.h>
 
 
@@ -9,9 +11,9 @@ int main (void) {
   point a; a.x= 2; a.y= 2; a.z = 4;
   point b; b.x= 4; b.y= 2; b.z = 2;
   point c; c.x= 3; c.y= 4; c.z = 4;
-  point d; d.x= 2; d.y= 4; d.z = 2;
-  point e; e.x= 6; e.y= 1; e.z = 3;
-  point f; f.x= 3; f.y= 4; f.z = 2;
+  point d; d.x= 0.5; d.y= 0; d.z = 0;
+  point e; e.x= 0; e.y= 0.5; e.z = 0;
+  point f; f.x= 0.5; f.y= 0; f.z = 1;
   point g; g.x= 0; g.y= 5; g.z = 4;
   point h; h.x= 4; h.y= 2; h.z = 5;
   point i; i.x= 1; i.y= 6; i.z = 0;
@@ -21,9 +23,9 @@ int main (void) {
 
 
 
-  point x; x.x= 0; x.y= 0; x.z = 0;
-  point y; y.x= 0.5; y.y= 0.5; y.z = 0.5;
-  point z; z.x= 0; z.y= 0.2; z.z = 0.31;
+  point x; x.x= 1; x.y= 0; x.z = 0;
+  point y; y.x= 0; y.y= 1; y.z = 0;
+  point z; z.x= 1; z.y= 0; z.z = 1;
 
   facet m = createFacet(x, y, z);
   facet n = createFacet(d, e, f);
@@ -72,10 +74,64 @@ int main (void) {
 
 
 	printf ("Initializing the scene...\n");
-	box space = initialize (7, 7, 7,3, &facets);
+	box space = initialize (7, 7, 7,1, &facets);
 	
 
+	settings set;
+	set.size_x = 7;
+	set.size_y = 7;
+	set.size_z = 7;
+	set.depth = 1;
 
+	ray r;
+	point o2;
+	o2.x = 0; o2.y = 0; o2.z = 0;
+
+	vector v;
+	v.x = 2.0/3.0; v.y = 1.0; v.z = 0.2;
+
+	r.o = o2;
+	r.v = v;
+
+	printf ("listechainee.c l.96");
+	int* boxes = boxesInPath (set, r);
+
+	int w = 0;
+
+	printf ("listechainee.c l.100");
+
+	while (w < boxes[0]) {
+		printf ("BOX NO %d : %d %d %d\n", w, boxes[3*w+1], boxes[3*w+2],boxes[3*w+3]);
+		w++;
+
+	}
+
+
+		printf ("loolll\n");
+		facet* fa = space[0][0][0]->f;
+		printf ("%f \n", fa->a.x);
+		printf ("loolll\n");
+
+
+
+	printf ("lol");
+	facet* nex_f = nextIntersection (space, set, r);
+
+	if (nex_f != NULL) {
+		printf ("nextintersec : %s\n", nex_f->name);
+	} else {
+		printf ("no facet :(\n");
+	}
+
+
+	point lolilol = computeIntersection (r, m);
+	printf ("%f %f %f \n", lolilol.x, lolilol.y, lolilol.z);
+
+	if (isInFacet (lolilol, m)) {
+			printf ("actually yes biatch\n");
+	} else {
+			printf ("no intersec indeed \n");
+	}
 
 	return 0;
 }

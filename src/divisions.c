@@ -68,6 +68,7 @@ box initialize (int size_x, int size_y, int size_z,  int depth, flist* facets){
 			}
 		}
 	}
+	return space;
 }
 
 
@@ -100,3 +101,31 @@ int isInBox (int i, int j, int k, int depth, int size_x, int size_y, int size_z,
 
 }
 
+int* getBoxId (settings s, ray r) {
+	double coeff_x = (double) s.depth / ((double) s.size_x);
+	double coeff_y = (double) s.depth / ((double) s.size_y);
+	double coeff_z = (double) s.depth / ((double) s.size_z);
+	
+	int x_o = (int) floor ( (double) r.o.x * coeff_x);
+	int y_o = (int) floor ( (double) r.o.y * coeff_y);
+	int z_o = (int) floor ( (double) r.o.z * coeff_z);
+
+
+	int* id = malloc (3* sizeof(int));
+	printf ("/!\\ Unfreed memory in getBoxId(settings, ray)\n");
+	
+	id[0] = x_o;
+	id[1] = y_o;
+	id[2] = z_o;
+	return id;
+
+}
+
+
+
+int sameBox (int* b1, int* b2) {
+	for (int i = 0; i < 3; i++)
+		if (b1[i] != b2[i])
+			return 0;
+	return 1;
+}

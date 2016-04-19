@@ -41,10 +41,10 @@ facet* getLast (flist *l) {
 }
 
 flist* addOnTop (flist *l, facet *f) {
-	printf ("adding on top of flist\n");
+//	printf ("adding on top of flist\n");
 
 	flist* new_flist = malloc (sizeof(flist*)); // NOT FREED YET !!
-	printf ("/!\\ unfreed memory \n");
+	printf ("/!\\ unfreed memory in addOnTop(flist*, facet*) \n");
 
 	new_flist->f = f;
 	new_flist->next = l;
