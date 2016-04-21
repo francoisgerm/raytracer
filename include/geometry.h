@@ -73,5 +73,5 @@ vector ptsToVect (point a, point b);
 
 void printfPoint (char* name, point a);
 
-float norma (vector v);
+double norma (vector v);
 #endif // __GEOMETRY_H__

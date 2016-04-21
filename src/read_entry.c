@@ -6,6 +6,8 @@
 #include "entry.h"
 #include "next_ligne.h"
 #include "is_comment.h"
+#include "misc.h"
+#include "math.h"
 
 //avoir le nombre de facet total
 //translater l'ensemble des points !!!!!!
@@ -36,6 +38,8 @@ entry* read ( char* filename)
     flist* list_facet=malloc(sizeof(flist));
     facet* f=malloc(sizeof(facet));
     color couleur;
+    
+    double x_min, y_min, z_min ;
     
     //on mesure la longueur du fichier
     fseek(file, 0, SEEK_END) ;
@@ -179,6 +183,39 @@ entry* read ( char* filename)
             position=next_ligne(file,position);        
         }
         
+        //on procéde à la translation de tous les points 
+                //on récupére la plus petite abscisse       
+        x_min=min3((sortie->screenA).x, (sortie->screenB).x, (sortie->obs).x) ;
+        y_min=min3((sortie->screenA).y, (sortie->screenB).y, (sortie->obs).y) ;
+        z_min=min3((sortie->screenA).z, (sortie->screenB).z, (sortie->obs).z) ;
+        for (j=0;j<nbr_sommet;j++)
+            {
+            x_min=min2(x_min,sommets[j].x) ;
+            y_min=min2(y_min,sommets[j].y) ;
+            z_min=min2(z_min,sommets[j].z) ;
+            }
+        x_min=fabs(x_min) ; //on a récupéré la plus petite abscisse x
+        y_min=fabs(y_min) ; //on a récupéré la plus petite abscisse y
+        z_min=fabs(z_min) ; //on a récupéré la plus petite abscisse z
+        
+                //on translate tous les points
+        (sortie->screenA).x=(sortie->screenA).x + x_min ;
+        (sortie->screenB).x=(sortie->screenB).x + x_min ;
+        (sortie->obs).x=(sortie->obs).x + x_min ;
+        (sortie->screenA).y=(sortie->screenA).y + y_min ;
+        (sortie->screenB).y=(sortie->screenB).y + y_min ;
+        (sortie->obs).y=(sortie->obs).y + y_min ;
+        (sortie->screenA).z=(sortie->screenA).z + z_min ;
+        (sortie->screenB).z=(sortie->screenB).z + z_min ;
+        (sortie->obs).z=(sortie->obs).z + z_min ;
+       
+        for (j=0;j<nbr_sommet;j++)
+            {
+            sommets[j].x= sommets[j].x + x_min ;
+            sommets[j].y= sommets[j].y + y_min ;
+            sommets[j].z= sommets[j].z + z_min ;
+            }
+            
        
        while (is_comment(file,&position)==1)
         {
@@ -287,8 +324,7 @@ entry* read ( char* filename)
         fscanf(file,"%lf",&k);
             fseek(file,1,SEEK_CUR);
             printf("z %lf ",k);
-            ((sortie->s).p).z=k;  
-        
+            ((sortie->s).p).z=k;       
         
         fscanf(file,"%d",&m);
             printf("r %d  ",m);
@@ -304,11 +340,13 @@ entry* read ( char* filename)
             printf("b %d  ",m);
             fseek(file,1,SEEK_CUR);
             ((sortie->s).cp).b=m;  
-        
+
+            
         
         free(sommets);
         free(f);
         free(list_facet);
+
         position =longueur ;
         printf("test \n");  
     }
