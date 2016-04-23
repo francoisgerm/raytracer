@@ -1,6 +1,8 @@
 #include "display.h"
 
 color getRayColor (ray r, settings s, box space, int refl) {
+	
+	printf ("\ngetRayColor\n");
 	// -----------------------------
 	// INIT. USELESS IN THE FUTURE
 	// -----------------------------
@@ -21,8 +23,12 @@ color getRayColor (ray r, settings s, box space, int refl) {
 	// REAL CODE
 	// ------------------
 
+	printf ("-> Checking for intersection between firt ray & facet\n");
+
 	
 	facet* next_collision = nextIntersection (space, s, r);
+
+	printf ("-> Checking done");
 
 	if (next_collision != NULL) {
 		point collision_point = computeIntersection (r, *next_collision);
@@ -138,6 +144,7 @@ color getRayColor (ray r, settings s, box space, int refl) {
 
 color getPixelColor (int x, int y, settings s, box space) {
 
+	printf ("\ngetPixelColor\n");
 	point top_lefthand = s.top_lefthand;
 	
 	point obs = s.obs;
@@ -159,7 +166,13 @@ color getPixelColor (int x, int y, settings s, box space) {
 	r.o = pixel;// obs
 	r.v = ray_direction;
 
+	printfPoint("top_lefthand", top_lefthand);
+	printfPoint("i", i_screen);
+	printfPoint("j", j_screen);
+	printfPoint("pixel", pixel);
+	printfPoint("ray direction", ray_direction);
 
-	return getRayColor (r,s,space,0);;
+
+	return getRayColor (r,s,space,0);
 
 }

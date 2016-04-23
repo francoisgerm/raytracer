@@ -116,8 +116,11 @@ settings defScreen (char* filename)
      
     vector AB_prim=ptsToVect(A,sortie.screenB) ;
     
-    AH=normalize(crossProduct(AO,AB_prim)) ;
-    AI= vSum(eDot((h/2.0),AH) , eDot(-(w/2.0),AB_prim)) ;
+    AH=normalize(crossProduct(AO,AB_prim));
+//    AI= vSum(eDot((h/2.0),AH) , eDot(-(w/2.0),AB_prim)) ;
+
+		double pixel_o_cm = (w / norma(AB_prim))/2.0;
+    AI= vSum(eDot((h/2.0)/pixel_o_cm ,AH) , eDot(-1.0,AB_prim)) ;
         
     sortie.top_lefthand =vSum(ZA,AI) ;
     //jusque là ca fonctionne

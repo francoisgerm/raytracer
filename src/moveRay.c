@@ -4,10 +4,10 @@
 
 facet* nextIntersection (box space, settings s, ray r) {
 
-//	printf ("Welcome in nextIntersection\n");
+	printf ("\nnextIntersection\n-------------\n");
 	flist* f_in_boxes = getPotFacets (space, s, r);
 
-//	printf ("We have the facets !!!\n\n\n");
+	printf ("We have the facets !!!\n\n\n");
 
 	facet* next_facet = NULL;
 	double pos = INFINITY;
@@ -18,7 +18,7 @@ facet* nextIntersection (box space, settings s, ray r) {
 		//printf ("Facet : %s \n", f_in_boxes->f->name);
 		point intersection = computeIntersection(r,*(f_in_boxes->f));
 
-		//printf ("intersection : %f %f %f\n", intersection.x, intersection.y, intersection.z);
+		printf ("intersection : %f %f %f\n", intersection.x, intersection.y, intersection.z);
 
 		if (isInFacet (intersection, *(f_in_boxes->f))) { // intersection = pos_bis * v + a
 
@@ -59,9 +59,10 @@ facet* nextIntersection (box space, settings s, ray r) {
 }
 
 flist* getPotFacets (box space, settings s, ray r) {
+	printf ("\ngetPotFacets\n---------\n");
 	int* boxes = boxesInPath (s, r);
 
-//printf ("we have the boxes in the path\n");
+	printf ("-> We have the boxes in the path\n");
 
 	flist* facets = malloc(sizeof(flist));
 	//printf ("/!\\ Unfreed memory in getFacetsInBoxes(box, settings, ray)\n");
@@ -69,16 +70,17 @@ flist* getPotFacets (box space, settings s, ray r) {
 	int n_facets = 0;
 	int i = 0;
 
-	//printf ("starting while\n");
+	printf ("-> starting loop on boxes\n");
 
 	while (i < boxes[0]) {
-		//printf ("WE HAVE %d BOXES\n", boxes[0]);
+		printf ("   -> we have %d boxes\n", boxes[0]);
 
-		//printf ("i = %d && box : %d %d %d\n\n\n",boxes[0],boxes[3*i+1],boxes[3*i+2],boxes[3*i+3]);
+		printf ("   -> i = %d && box : %d %d %d\n\n\n",boxes[0],boxes[3*i+1],boxes[3*i+2],boxes[3*i+3]);
 
 		facet* f = space[0][0][0]->f;
-		//printf ("%f \n", f->a.x);
+		printf ("    -> first facet a.x : %f \n", f->a.x);
 		flist* tmp = space[boxes[3*i+1]][boxes[3*i+2]][boxes[3*i+3]];
+		printf ("    -> tmp flist ok\n");
 		while (tmp->next != NULL) {
 
 			//printf ("loop over facets in getPotFacets\n");
@@ -199,6 +201,8 @@ double getStep (settings s, ray r) {
 
 int* boxesInPath (settings s, ray r) {
 
+	printf ("\nboxesInPath\n--------\n");
+
 	int* boxes_crossed = malloc(4*sizeof(int));
 //	printf ("/!\\ Unfreed memory in boxesInPath(settings, ray)\n");
 
@@ -211,12 +215,10 @@ int* boxesInPath (settings s, ray r) {
 
 	int nb_boxes = 1;
 
+	printf ("-> ray : %f %f %f\n\n\n", r.o.x, r.o.y, r.o.z);
 
-	//printf ("new box %d %d %d\n", boxes_crossed[1], boxes_crossed[2], boxes_crossed[3]);
+	printf ("-> new box %d %d %d\n", boxes_crossed[1], boxes_crossed[2], boxes_crossed[3]);
 
-
-
-//			printf ("RAY : %f %f %f\n\n\n", r.o.x, r.o.y, r.o.z);
 	while (inScene(s, r2.o)) { 
 
 			// moving the ray to the next box

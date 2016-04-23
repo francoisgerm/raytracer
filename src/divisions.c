@@ -107,6 +107,13 @@ int isInBox (int i, int j, int k, int depth, int size_x, int size_y, int size_z,
 }
 
 int* getBoxId (settings s, ray r) {
+
+
+	printf ("size x : %f\n", s.size_x);
+
+	printf ("size y : %f\n", s.size_y);
+
+	printf ("size z : %f\n", s.size_z);
 	double coeff_x = (double) s.depth / ((double) s.size_x);
 	double coeff_y = (double) s.depth / ((double) s.size_y);
 	double coeff_z = (double) s.depth / ((double) s.size_z);

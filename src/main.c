@@ -19,10 +19,17 @@ int main (int argc, char* argv) {
 	printf ("settings...\n");
 	settings set = defScreen ("scenes/cubes.scn");
 
+	flist* facets = set.facets;
+
+	while (facets->next != NULL) {
+		printf ("list of facet : %f \n", facets->f->a.x);
+		facets = facets->next;
+	}
+
 	printf ("Initializing the scene...\n");
 	box space = initialize (set);
 
-	printf ("lolilol\n");
+	printf ("Scene initialized !\n");
 
 	SDL_Init (SDL_INIT_VIDEO);
 
@@ -31,7 +38,12 @@ int main (int argc, char* argv) {
 
 	for (int i = 1; i < set.height; i++) {
 		for (int j = 1; j < set.width; j++) {
+
+			printf ("-> Coloring pixel %d %d\n", i, j);
+
 			color whatup = getPixelColor (i, j, set, space);
+
+			printf ("-> Color : %d %d %d\n", whatup.r, whatup.g, whatup.b);
 
 			SDL_Surface* rectangle = SDL_CreateRGBSurface(SDL_HWSURFACE, 1, 1, 32, 0, 0, 0, 0);
 

@@ -49,9 +49,12 @@ entry* read ( char* filename)
 		f_pipeau->c.y = 0;
 		f_pipeau->c.z = 0;
 
+		list_facet->f = f_pipeau;
+
+//		flist* last_facet = malloc(sizeof(flist));
 
 
-    facet* f=malloc(sizeof(facet));
+
     color couleur;
     
     //on mesure la longueur du fichier
@@ -215,6 +218,8 @@ entry* read ( char* filename)
         //création de la liste de facet
         for(i=0;i<nbr_facet;i++)
         {
+
+    				facet* f=malloc(sizeof(facet));
             fscanf(file,"%d",&num_sommet);
                 fseek(file,1,SEEK_CUR); //permet de passer ", "
                 printf("num_sommet %d  ", num_sommet);
@@ -245,8 +250,19 @@ entry* read ( char* filename)
                 couleur.b=l;
             f->cp=couleur;
                                 
+
+
+
+
+
             list_facet=addOnTop(list_facet, f);
+
+
+
+						//printf ("x : %f ; y : %f ; z : %f\n", list_facet->f->a.x, list_facet->f->a.y, list_facet->f->a.z);
+					//	printf ("NEXT x : %f ; y : %f ; z : %f\n", list_facet->next->f->a.x,list_facet->next->f->a.y, list_facet->next->f->a.z);
         }      
+
 
         (sortie->Facets)=malloc(sizeof(flist));
         (sortie->Facets)=list_facet ;
@@ -323,9 +339,9 @@ entry* read ( char* filename)
             ((sortie->s).cp).b=m;  
         
         
-        free(sommets);
-        free(f);
-        free(list_facet);
+  //      free(sommets);
+ //       free(f);
+//        free(list_facet);
         position =longueur ;
         printf("test \n");  
     }
