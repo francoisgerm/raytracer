@@ -9,7 +9,7 @@ typedef flist**** box;
 typedef flist* subBox;
 
 
-box initialize (int size_x, int size_y, int size_z, int depth, flist *facets);
+box initialize (settings s);
 
 int isInBox(int i, int j, int k, int depth, int size_x, int size_y, int size_z, facet* f);
 

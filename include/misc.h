@@ -7,7 +7,7 @@
 
 typedef struct ssettings{
 	int depth;
-	double size_x, size_y, size_y; // scene's
+	double size_x, size_y, size_z; // scene's
 	color back;
 	source s;
 	point obs;

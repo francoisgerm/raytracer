@@ -8,7 +8,7 @@ typedef struct sentry{
     color back;
     int width, height, nbPoints, nbFacets;
     point obs, screenA, screenB;
-    flist* Facets ;
+   flist* Facets ;
     source s;
 } entry;
 

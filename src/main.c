@@ -1,75 +1,58 @@
-/*#include "../include/includes.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-int main (void) {
-/*
-        printf ("lolilol");
-
-        point a;
-        point b;
-        point c;
-
-        a.x = 1;
-        a.y = 0;
-        a.z = 0;
-
-        b.x = 0;
-        b.y = 1;
-        b.z = 0;
-
-        c.x = 0;
-        c.y = 0;
-        c.z = 1;
-
-        facet lol = createFacet (a, b, c);
-
-        printf("x = %f\ny = %f\nz = %f\n", lol.n.x, lol.n.y, lol.n.z);
-*//*
-
-        matrix a;
-        matrix b;
-
-        a.xx = 1;
-        a.xy = 2;
-        a.xz = 0;
-
-        a.yx = 0;
-        a.yy = 3;
-        a.yz = 0;
-
-        a.zx = 0;
-        a.zy = 0;
-        a.zz = 1;
-
-        b = matInverse (a);
-        matrix m = a;
-        double det = m.xx*(m.yy*m.zz - m.zy*m.yz);
-        det += m.yx * (m.xz*m.zy - m.xy*m.zz);
-        det += m.zx * (m.xy*m.yz - m.xz * m.yy);
+#include "divisions.h"
+#include "flist.h"
+#include "geometry.h"
+#include "intersection.h"
+#include "misc.h"
+#include "moveRay.h"
+#include "display.h"
+#include "imgsdl.h"
+#include "entry.h"
 
 
-        matrix c = matProduct(a, b);
-        printf ("%f %f %f\n", c.xx, c.xy, c.xz);
-        printf ("%f %f %f\n", c.yx, c.yy, c.yz);
-        printf ("%f %f %f\n", c.zx, c.zy, c.zz);
 
-        point a, b, c;
-        a.x = 1; a.y = 0; a.z = 0;
-        b.x = 1; b.y = 2; b.z = 0;
-        c.x = 0; c.y = 0; c.z = 2;
+int main (int argc, char* argv) {
 
-        facet f = createFacet(a, b, c);
+	settings set = defScreen ("scenes/cubes.scn");
 
-        point d;
-        d.x = 0 ; d.y = 0; d.z = 0;
+	printf ("Initializing the scene...\n");
+	box space = initialize (set);
 
-        ray r;
-        r.o = d;
-        r.v.x = 1; r.v.y = 1; r.v.z = 0.5;
-        r.v = normalize (r.v);
-        point e = computeIntersection (r, f);
+	SDL_Init (SDL_INIT_VIDEO);
 
-        printf ("%f %f %f\n", e.x, e.y, e.z);
-        return 0;
+	SDL_Surface* sdl_screen = SDL_SetVideoMode (200, 200, 32, SDL_HWSURFACE);
+	SDL_FillRect (sdl_screen, NULL, SDL_MapRGB(sdl_screen->format, 0, 0, 0));
+
+	for (int i = 1; i < set.height; i++) {
+		for (int j = 1; j < set.width; j++) {
+			color whatup = getPixelColor (i, j, set, space);
+
+			SDL_Surface* rectangle = SDL_CreateRGBSurface(SDL_HWSURFACE, 1, 1, 32, 0, 0, 0, 0);
+
+			SDL_FillRect(rectangle, NULL, SDL_MapRGB(sdl_screen->format,whatup.r, 	whatup.g, whatup.b));
+
+			SDL_Rect position;
+			position.x = i;
+			position.y = j;
+			SDL_BlitSurface(rectangle, NULL, sdl_screen, &position);
+
+
+
+
+
+			SDL_Flip(sdl_screen);
+		}
+	}
+
+	sleep(200);
+
+	SDL_Quit ();
+
+
+
+
+
+	return 0;
 }
-*/
-

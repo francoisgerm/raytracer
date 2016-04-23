@@ -4,7 +4,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-box initialize (int size_x, int size_y, int size_z,  int depth, flist* facets){
+box initialize (settings s){
+	int size_x = s.size_x;
+	int size_y = s.size_y;
+	int size_z = s.size_z;
+	int depth = s.depth;
+	flist* facets = s.facets;
 	//printf ("Initialization...\n");
 
 	box space = malloc (depth * sizeof (flist***));
