@@ -7,6 +7,7 @@
 #include "display.h"
 #include <stdio.h>
 #include "imgsdl.h"
+#include "entry.h"
 
 /*void traceSDLScene (SDL_Surface* display, scene* s) {
   int h = s->height, w = s->width, i, j;
@@ -162,11 +163,83 @@ int main (void) {
 		}
 	}
 
-			sleep(200);
+			sleep(2);
 
 	SDL_Quit ();
 
 
 //			printf ("Color of the ambiance : %d %d %d\n", whatup.r, whatup.g, whatup.b);
+
+
+
+
+
+
+
+
+
+
+
+
+// TEST WITH FILES
+
+	entry scene = *read("scenes/cubes.scn");
+	flist* n_facets = scene.Facets;
+	set.depth = 1;
+	set.width = scene.width;
+	set.height = scene.height;
+
+	// size_x, size_y, size_z
+	double size_x = 0.0;
+	double size_y = 0.0;
+	double size_z = 0.0;
+
+	flist* tmp = n_facets->f;
+	while (tmp != NULL) {
+		if (tmp->f.a.x > size_x)
+			size_x = tmp->f.a.x;
+		if (tmp->f.b.x > size_x)
+			size_x = tmp->f.b.x;
+		if (tmp->f.c.x > size_x)
+			size_x = tmp->f.c.x;
+
+		if (tmp->f.a.y > size_y)
+			size_y = tmp->f.a.y;
+		if (tmp->f.b.y > size_y)
+			size_y = tmp->f.b.y;
+		if (tmp->f.c.y > size_y)
+			size_y = tmp->f.c.y;
+
+		if (tmp->f.a.z > size_z)
+			size_z = tmp->f.a.z;
+		if (tmp->f.b.z > size_z)
+			size_z = tmp->f.b.z;
+		if (tmp->f.c.z > size_z)
+			size_z = tmp->f.c.z;
+
+		tmp = tmp->next;
+	}
+
+	set.size_x = size_x; set.size_y = size_y ; set.size_z = size_z;
+	
+	set.back.r = 50;
+	set.back.r = 75;
+	set.back.r = 100;
+
+	printf ("Initializing the scene...\n");
+	box space = initialize (size_x, size_y, size_z,1, &facets);
+
+
+
+	screen n_screen = defScreen(&scene);
+
+
+
+
+
+
+
+
+
 	return 0;
 }
