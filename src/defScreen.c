@@ -75,13 +75,13 @@ screen defScreen (entry* entree)
     AH=normalize(crossProduct(AO,AB_prim)) ;
     AI= vSum(eDot((h/2.0),AH) , eDot(-(w/2.0),AB_prim)) ;
 
-    printf(" AI.x : %lf \n", AI.x) ;
-    printf(" AI.y : %lf \n", AI.y) ;
-    printf(" AI.z : %lf \n", AI.z) ;
+    //printf(" AI.x : %lf \n", AI.x) ;
+    //printf(" AI.y : %lf \n", AI.y) ;
+    //printf(" AI.z : %lf \n", AI.z) ;
         
     sortie.top_lefthand =vSum(ZA,AI) ;
     //jusque là ca fonctionne
-    i=normalize(eDot(-1.0,AB));
+    i=normalize(AB_prim);
     j=normalize(eDot(-1.0,AH));
     sortie.i=i ;
     sortie.j=j ;
