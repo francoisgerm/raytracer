@@ -200,6 +200,47 @@ entry* read ( char* filename)
         }
         
        
+       
+       //------------------
+       //recherche du minimum pour décaller tous les points
+       //------------------
+       
+       double x_min, y_min, z_min ;
+       x_min=min3((sortie->screenA).x , (sortie->screenB).x , (sortie->obs).x) ;
+       y_min=min3((sortie->screenA).y , (sortie->screenB).y , (sortie->obs).y) ;
+       z_min=min3((sortie->screenA).z , (sortie->screenB).z , (sortie->obs).z) ;
+       
+       for (j=0;j<nbr_sommet;j++)
+       {
+            x_min =min2(x_min, sommets[j].x) ;
+            y_min =min2(y_min, sommets[j].y) ;
+            z_min =min2(z_min, sommets[j].z) ;
+       }
+       
+       x_min=fabs(x_min) ;
+       y_min=fabs(y_min) ;
+       z_min=fabs(z_min) ;
+       
+       
+       (sortie->obs).x +=x_min ;
+       (sortie->obs).y +=y_min ;
+       (sortie->obs).z +=z_min ;
+       (sortie->screenA).x +=x_min ;
+       (sortie->screenA).y +=y_min ;
+       (sortie->screenA).z +=z_min ;
+       (sortie->screenB).x +=x_min ;
+       (sortie->screenB).y +=y_min ;
+       (sortie->screenB).z +=z_min ;
+       
+       for (j=0;j<nbr_sommet;j++)
+        {
+            sommets[j].x +=x_min ;
+            sommets[j].y +=y_min ;
+            sommets[j].z +=z_min ;
+        }
+        
+       
+       
        while (is_comment(file,&position)==1)
         {
             fseek(file,0,position);
@@ -310,17 +351,17 @@ entry* read ( char* filename)
         fscanf(file,"%lf",&k);
             printf("x %lf  ",k);
             fseek(file,1,SEEK_CUR);
-            ((sortie->s).p).x=k;  
+            ((sortie->s).p).x=k + x_min;  
             
         fscanf(file,"%lf",&k);
             fseek(file,1,SEEK_CUR);
             printf("y %lf  ",k);
-            ((sortie->s).p).y=k;     
+            ((sortie->s).p).y=k + y_min ;     
 
         fscanf(file,"%lf",&k);
             fseek(file,1,SEEK_CUR);
             printf("z %lf ",k);
-            ((sortie->s).p).z=k;  
+            ((sortie->s).p).z=k + z_min ;  
         
         
         fscanf(file,"%d",&m);
