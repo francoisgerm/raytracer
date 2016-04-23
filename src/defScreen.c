@@ -4,6 +4,7 @@
 #include "entry.h"
 #include "misc.h"
 #include "defScreen.h"
+#include "flist.h"
 
 
 // gcc src/defScreen.c src/misc.c -Iinclude -Wall

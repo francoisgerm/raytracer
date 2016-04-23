@@ -2,6 +2,7 @@
 #define ENTRY_H
 
 #include "geometry.h"
+#include "flist.h"
 
 typedef struct sentry{
     color back;
