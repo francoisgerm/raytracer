@@ -6,6 +6,6 @@
 #include "entry.h"
 #include "misc.h"
 
-screen defScreen (entry * entree);
+settings defScreen (char* filename);
 
 #endif
