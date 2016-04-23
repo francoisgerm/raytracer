@@ -17,7 +17,7 @@ facet createFacet (point a, point b, point c) {
 point computeIntersection (ray incident_r, facet f){
 
         if (dotProduct(incident_r.v, f.n) == 0) {
-            printf ("Ray doesn't intersect the facet, returning origin");
+            //printf ("Ray doesn't intersect the facet, returning origin");
 
             point intersection;
             intersection.x = 0;

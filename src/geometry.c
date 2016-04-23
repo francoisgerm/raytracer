@@ -1,4 +1,5 @@
 #include "geometry.h"
+#include "intersection.h"
 
 #include <stdio.h>
 
@@ -50,6 +51,38 @@ void printfPoint (char* name, point a) {
         printf ("%s | x : %f ; y : %f ; z : %f\n",name,  a.x, a.y, a.z);
 }
 
-double norma (vector v) {
+float norma (vector v) {
 	return sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
+}
+
+
+int sameSide (facet f, point a, point b) {
+	vector direction = ptsToVect (a, b);
+
+	ray ab; 
+	ab.v = direction;
+	ab.o = a;
+
+	if (fabs(dotProduct (direction, f.n)) > 10e-7) {
+		point intersection = computeIntersection(ab, f);
+
+		// intersection = t*ab + a
+		point i_minus_a = vSum (intersection, eDot (-1.0, a));
+		float t = 0.0;
+	
+		if (fabs (ab.v.x) > 10e-7)
+			t = i_minus_a.x / ab.v.x;
+		else if (fabs (ab.v.y) > 10e-7)
+			t = i_minus_a.y / ab.v.y;
+		else if (fabs (ab.v.z) > 10e-7)
+			t = i_minus_a.z / ab.v.z;
+
+		if (10e-7 < t && t < 1) 
+			return 0;
+		else
+			return 1;
+	} else {
+	//	printf ("dotpro smaeSide : %f\n ",fabs(dotProduct (direction, f.n)));
+		return 1;
+	}
 }

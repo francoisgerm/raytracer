@@ -2,7 +2,6 @@
 #define ENTRY_H
 
 #include "geometry.h"
-#include "flist.h"
 
 typedef struct sentry{
     color back;
@@ -10,7 +9,7 @@ typedef struct sentry{
     point obs, screenA, screenB;
     flist* Facets ;
     source s;
-}entry;
+} entry;
 
 
 #endif

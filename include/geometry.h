@@ -36,8 +36,9 @@ typedef struct sfacet {
  * Le sens du vecteur donne la direction du rayon.
  */
 typedef struct sray {
-  point o;
-  vector v;
+	point o;
+	vector v;
+	int reflexions;
 } ray;
 
 /*
@@ -73,5 +74,7 @@ vector ptsToVect (point a, point b);
 
 void printfPoint (char* name, point a);
 
-double norma (vector v);
+float norma (vector v);
+
+int sameSide (facet f, point a, point b);
 #endif // __GEOMETRY_H__

@@ -5,12 +5,12 @@
 #include <unistd.h>
 
 box initialize (int size_x, int size_y, int size_z,  int depth, flist* facets){
-	printf ("Initialization...\n");
+	//printf ("Initialization...\n");
 
 	box space = malloc (depth * sizeof (flist***));
 
 
-	printf ("-> Creating space...\n");
+//	printf ("-> Creating space...\n");
 	for (int i = 0; i < depth ; i++) {
 		space[i] = malloc (depth * sizeof(flist**));
 		for (int j = 0; j < depth; j++) {
@@ -21,24 +21,24 @@ box initialize (int size_x, int size_y, int size_z,  int depth, flist* facets){
 				space[i][j][k]->f = malloc (sizeof(facet*));
 				space[i][j][k]->f->a.x = 51;
 				space[i][j][k]->f->a.y = 16;
-				printf (" | -> Check-up %d %d %d...\n", i, j, k);
+	//			printf (" | -> Check-up %d %d %d...\n", i, j, k);
 
 				
 			}
 		}
 	}
-	printf (" => Space created !\n");
-	printf ("-> Assigning facets...\n");
+//	printf (" => Space created !\n");
+//	printf ("-> Assigning facets...\n");
 	for (int i= 0; i < depth; i++) {
 		for (int j = 0; j < depth; j++) {
 			for (int k = 0; k < depth; k++) {
-				printf (" | -> Check-up %d %d %d...\n", i, j, k);
+	//			printf (" | -> Check-up %d %d %d...\n", i, j, k);
 				flist* tmp = facets;
-				printf (" | Temporary list created...\n");
+		//		printf (" | Temporary list created...\n");
 				while (tmp != NULL) { 
-					printf (" | -> Next facet in list...\n");
+			//		printf (" | -> Next facet in list...\n");
 					if (isInBox (i, j, k, depth, size_x, size_y, size_z, tmp->f)) {
-							printf ("    | New Facet !\n");
+				//			printf ("    | New Facet !\n");
 							space[i][j][k] = addOnTop(space[i][j][k], tmp->f);
 
 
@@ -50,18 +50,18 @@ box initialize (int size_x, int size_y, int size_z,  int depth, flist* facets){
 		}
 	}
 
-	printf (" => Initialization done !\n");
+//	printf (" => Initialization done !\n");
 
-	printf ("Checking initialization... \n");
+	//printf ("Checking initialization... \n");
 
 	for (int i = 0; i < depth; i++) {
 		for (int j = 0; j < depth; j++) {
 			for (int k = 0; k < depth; k++) {
 				flist *tmp;
 				tmp = space[i][j][k];
-				printf ("==> Box : %d %d %d\n", i, j, k);
+		//		printf ("==> Box : %d %d %d\n", i, j, k);
 				while (tmp->next != NULL) {
-						printf ("   --> facet %s\n", tmp->f->name);
+			//			printf ("   --> facet %s\n", tmp->f->name);
 //						sleep(1);
 						tmp = tmp->next;
 				}
@@ -106,17 +106,24 @@ int* getBoxId (settings s, ray r) {
 	double coeff_y = (double) s.depth / ((double) s.size_y);
 	double coeff_z = (double) s.depth / ((double) s.size_z);
 	
-	int x_o = (int) floor ( (double) r.o.x * coeff_x);
-	int y_o = (int) floor ( (double) r.o.y * coeff_y);
-	int z_o = (int) floor ( (double) r.o.z * coeff_z);
+	int x_o = (int) floor ( (double) fabs(r.o.x) * coeff_x);
+	int y_o = (int) floor ( (double) fabs(r.o.y) * coeff_y);
+	int z_o = (int) floor ( (double) fabs(r.o.z) * coeff_z);
 
 
 	int* id = malloc (3* sizeof(int));
-	printf ("/!\\ Unfreed memory in getBoxId(settings, ray)\n");
+//	printf ("/!\\ Unfreed memory in getBoxId(settings, ray)\n");
 	
 	id[0] = x_o;
 	id[1] = y_o;
 	id[2] = z_o;
+
+
+	//printf ("x : %f, box : %d\n", r.o.x, x_o);
+//	printf ("y : %f, box : %d\n", r.o.y, y_o);
+//	printf ("z : %f, box : %d\n", r.o.z, z_o);
+
+
 	return id;
 
 }

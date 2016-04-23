@@ -16,7 +16,8 @@ double min3 (double a, double b, double c) {
 }
 
 int inScene (settings s, point p) {
-	if (p.x > s.size_x || p.y > s.size_y || p.z > s.size_z)
+	if (p.x > s.size_x || p.y > s.size_y || p.z > s.size_z || p.x < -10e-7 || p.y <	-10e-7
+	|| p.z < -10e-7)
 		return 0;
 	else
 		return 1;
