@@ -34,6 +34,23 @@ entry* read ( char* filename)
     int l,m;
     point* sommets ;
     flist* list_facet=malloc(sizeof(flist));
+		list_facet->next = NULL;
+
+		facet* f_pipeau = malloc(sizeof(facet));
+		f_pipeau->a.x = 0;
+		f_pipeau->a.y = 0;
+		f_pipeau->a.z = 0;
+
+		f_pipeau->b.x = 0;
+		f_pipeau->b.y = 0;
+		f_pipeau->b.z = 0;
+
+		f_pipeau->c.x = 0;
+		f_pipeau->c.y = 0;
+		f_pipeau->c.z = 0;
+
+
+
     facet* f=malloc(sizeof(facet));
     color couleur;
     

@@ -10,15 +10,19 @@
 #include "display.h"
 #include "imgsdl.h"
 #include "entry.h"
+#include "defScreen.h"
 
 
 
 int main (int argc, char* argv) {
 
+	printf ("settings...\n");
 	settings set = defScreen ("scenes/cubes.scn");
 
 	printf ("Initializing the scene...\n");
 	box space = initialize (set);
+
+	printf ("lolilol\n");
 
 	SDL_Init (SDL_INIT_VIDEO);
 

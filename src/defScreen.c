@@ -34,8 +34,8 @@ settings defScreen (char* filename)
     B.z= entree->screenB.z ;
     
     //création des vecteurs nécessaires
-    vector ZB= ptsToVect(Z,entree->screenB) ;
-    vector ZO= ptsToVect(Z,entree->obs) ;
+//    vector ZB= ptsToVect(Z,entree->screenB) ;
+  //  vector ZO= ptsToVect(Z,entree->obs) ;
     vector ZA= ptsToVect(Z,entree->screenA) ;
     vector AB = ptsToVect(entree->screenA,entree->screenB) ;
     vector AO = ptsToVect(entree->screenA,entree->obs) ;
@@ -46,9 +46,9 @@ settings defScreen (char* filename)
     //on récupére les éléments qui ne varient pas
     sortie.width= w ;
     sortie.height= h ;
-    sortie.s=entree.s ;
-    sortie.back=entree.back ;
-    sortie.facets=entree.Facets ;
+    sortie.s=entree->s ;
+    sortie.back=entree->back ;
+    sortie.facets=entree->Facets ;
     sortie.screenA= entree->screenA ;
     sortie.obs = entree->obs ;
     sortie.depth = 1 ; // on le met à 1 pour l'instant
@@ -60,26 +60,26 @@ settings defScreen (char* filename)
 
 	flist* tmp = entree->Facets;
 	while (tmp != NULL) {
-		if (tmp->f.a.x > size_x)
-			size_x = tmp->f.a.x;
-		if (tmp->f.b.x > size_x)
-			size_x = tmp->f.b.x;
-		if (tmp->f.c.x > size_x)
-			size_x = tmp->f.c.x;
+		if (tmp->f->a.x > size_x)
+			size_x = tmp->f->a.x;
+		if (tmp->f->b.x > size_x)
+			size_x = tmp->f->b.x;
+		if (tmp->f->c.x > size_x)
+			size_x = tmp->f->c.x;
 
-		if (tmp->f.a.y > size_y)
-			size_y = tmp->f.a.y;
-		if (tmp->f.b.y > size_y)
-			size_y = tmp->f.b.y;
-		if (tmp->f.c.y > size_y)
-			size_y = tmp->f.c.y;
+		if (tmp->f->a.y > size_y)
+			size_y = tmp->f->a.y;
+		if (tmp->f->b.y > size_y)
+			size_y = tmp->f->b.y;
+		if (tmp->f->c.y > size_y)
+			size_y = tmp->f->c.y;
 
-		if (tmp->f.a.z > size_z)
-			size_z = tmp->f.a.z;
-		if (tmp->f.b.z > size_z)
-			size_z = tmp->f.b.z;
-		if (tmp->f.c.z > size_z)
-			size_z = tmp->f.c.z;
+		if (tmp->f->a.z > size_z)
+			size_z = tmp->f->a.z;
+		if (tmp->f->b.z > size_z)
+			size_z = tmp->f->b.z;
+		if (tmp->f->c.z > size_z)
+			size_z = tmp->f->c.z;
 
 		tmp = tmp->next;
 	}

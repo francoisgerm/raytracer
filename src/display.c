@@ -140,7 +140,7 @@ color getPixelColor (int x, int y, settings s, box space) {
 
 	point top_lefthand = s.top_lefthand;
 	
-	point obs = s..obs;
+	point obs = s.obs;
 
 	int res_x = s.width;
 	int res_y = s.height;
