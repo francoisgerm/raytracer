@@ -17,14 +17,33 @@
 int main (int argc, char* argv) {
 
 	printf ("settings...\n");
-	settings set = defScreen ("scenes/cubes.scn");
+	settings set = defScreen ("scenes/mirror.scn");
+
+
+	printfPoint ("top_left", set.top_lefthand);
+	printfPoint ("i", set.i);
+	printfPoint ("j", set.j);
+	printfPoint ("obs", set.obs);
+	printfPoint ("a", set.screenA);
+	printfPoint ("b", set.screenB);
+
+	printf ("Size x : %f\n", set.size_x);
+	printf ("Size y : %f\n", set.size_y);
+	printf ("Size z : %f\n", set.size_z);
 
 	flist* facets = set.facets;
 
+	int i = 1;
 	while (facets->next != NULL) {
-		printf ("list of facet : %f \n", facets->f->a.x);
+		printf ("Facet no %d :\n", i);
+		printfPoint (" -> a", facets->f->a);
+		printfPoint (" -> b", facets->f->b);
+		printfPoint (" -> c", facets->f->c);
 		facets = facets->next;
+
+		i++;
 	}
+
 
 	printf ("Initializing the scene...\n");
 	box space = initialize (set);
@@ -33,17 +52,16 @@ int main (int argc, char* argv) {
 
 	SDL_Init (SDL_INIT_VIDEO);
 
-	SDL_Surface* sdl_screen = SDL_SetVideoMode (200, 200, 32, SDL_HWSURFACE);
+	SDL_Surface* sdl_screen = SDL_SetVideoMode (set.height_px, set.width_px, 32, SDL_HWSURFACE);
 	SDL_FillRect (sdl_screen, NULL, SDL_MapRGB(sdl_screen->format, 0, 0, 0));
 
-	for (int i = 1; i < set.height; i++) {
-		for (int j = 1; j < set.width; j++) {
+	for (int i = 1; i < set.height_px; i++) {
+		for (int j = 1; j < set.width_px; j++) {
 
-			printf ("-> Coloring pixel %d %d\n", i, j);
 
 			color whatup = getPixelColor (i, j, set, space);
 
-			printf ("-> Color : %d %d %d\n", whatup.r, whatup.g, whatup.b);
+//			printf ("-> Color : %d %d %d\n", whatup.r, whatup.g, whatup.b);
 
 			SDL_Surface* rectangle = SDL_CreateRGBSurface(SDL_HWSURFACE, 1, 1, 32, 0, 0, 0, 0);
 
@@ -56,9 +74,11 @@ int main (int argc, char* argv) {
 
 
 
+//	sleep (100);
 
 
 			SDL_Flip(sdl_screen);
+//			sleep (1);
 		}
 	}
 
@@ -72,3 +92,5 @@ int main (int argc, char* argv) {
 
 	return 0;
 }
+
+

@@ -6,6 +6,8 @@
 #include "entry.h"
 #include "next_ligne.h"
 #include "is_comment.h"
+#include "misc.h"
+#include "intersection.h"
 
 //avoir le nombre de facet total
 //translater l'ensemble des points !!!!!!
@@ -202,7 +204,7 @@ entry* read ( char* filename)
        
        
        //------------------
-       //recherche du minimum pour décaller tous les points
+       //recherche du minimum pour décaler tous les points
        //------------------
        
        double x_min, y_min, z_min ;
@@ -220,6 +222,8 @@ entry* read ( char* filename)
        x_min=fabs(x_min) ;
        y_min=fabs(y_min) ;
        z_min=fabs(z_min) ;
+
+			 printf ("x y z min %f %f %f\n", x_min, y_min, z_min);
        
        
        (sortie->obs).x +=x_min ;
@@ -259,20 +263,31 @@ entry* read ( char* filename)
         //création de la liste de facet
         for(i=0;i<nbr_facet;i++)
         {
+			point a;
+			point b;
+			point c;
 
     				facet* f=malloc(sizeof(facet));
             fscanf(file,"%d",&num_sommet);
                 fseek(file,1,SEEK_CUR); //permet de passer ", "
                 printf("num_sommet %d  ", num_sommet);
-                (f->a)=(sommets[num_sommet-1]);
+                a=(sommets[num_sommet-1]);
             fscanf(file,"%d",&num_sommet);
                 fseek(file,1,SEEK_CUR); //permet de passer ", "
                 printf("num_sommet %d  ", num_sommet);
-                f->b=sommets[num_sommet-1];
+                b=sommets[num_sommet-1];
             fscanf(file,"%d",&num_sommet);
                 fseek(file,1,SEEK_CUR); //permet de passer ", "
                 printf("num_sommet %d  ", num_sommet);
-                f->c=sommets[num_sommet-1];
+                //f->c=sommets[num_sommet-1];
+                c=sommets[num_sommet-1];
+
+			*f = createFacet (a, b, c);
+			printfPoint ("OKLM NORMAL", f->n);
+			printf ("\n\n\n\n\n\n\n\n\n\n\n");
+
+
+
             fscanf(file,"%lf",&k);
                 fseek(file,1,SEEK_CUR);
                 printf("coeff reflexion %lf  ",k);

@@ -4,25 +4,36 @@
 
 facet* nextIntersection (box space, settings s, ray r) {
 
-	printf ("\nnextIntersection\n-------------\n");
+	//printf ("\nnextIntersection\n-------------\n");
 	flist* f_in_boxes = getPotFacets (space, s, r);
 
-	printf ("We have the facets !!!\n\n\n");
+	//printf ("\nnextIntersection : we have the potential facets\n");
 
 	facet* next_facet = NULL;
 	double pos = INFINITY;
 
+	//printf ("  -> loop over the facets in the box\n");
+	int index=1;
 	while (f_in_boxes != NULL) {
+		//printf ("    -> facet %d\n", index);
+		index++;
+		//printfPoint ("a", f_in_boxes->f->a); 
+		//printfPoint ("b", f_in_boxes->f->b); 
+		//printfPoint ("c", f_in_boxes->f->c); 
 
-
-		//printf ("Facet : %s \n", f_in_boxes->f->name);
 		point intersection = computeIntersection(r,*(f_in_boxes->f));
 
-		printf ("intersection : %f %f %f\n", intersection.x, intersection.y, intersection.z);
 
+		//printf ("    -> intersection point :");
+		//printf (" %f %f %f\n", intersection.x, intersection.y, intersection.z);
+
+		//printfPoint ("normal", f_in_boxes->f->n);
+
+		//printfPoint ("with ray v", r.v);
+		//printfPoint ("with ray o", r.o);
 		if (isInFacet (intersection, *(f_in_boxes->f))) { // intersection = pos_bis * v + a
 
-			//printf ("we have intesection with %s\n", f_in_boxes->f->name);
+			////printf ("we have intesection with %s\n", f_in_boxes->f->name);
 //			sleep(1);
 			point inter_to_origin = vSum (intersection, eDot(-1, r.o)); // = ->(OI)	
 			double pos_bis = -1.0;
@@ -30,70 +41,72 @@ facet* nextIntersection (box space, settings s, ray r) {
 
 			if(fabs(r.v.x) > 10e-7) {
 				pos_bis = inter_to_origin.x / r.v.x;
-				//printf ("%f ; %f\n", pos_bis, inter_to_origin.x / r.v.x);
+				////printf ("%f ; %f\n", pos_bis, inter_to_origin.x / r.v.x);
 			} else if (fabs(r.v.y) > 10e-7) {
 				pos_bis = inter_to_origin.y / r.v.y;
-				//printf ("%f ; %f\n", pos_bis, inter_to_origin.y / r.v.y);
+				////printf ("%f ; %f\n", pos_bis, inter_to_origin.y / r.v.y);
 			
 			} else if (fabs(r.v.z) > 10e-7) {
 				pos_bis = inter_to_origin.z / r.v.z;;
-				//printf ("%f ; %f\n", pos_bis, inter_to_origin.z / r.v.z);
+				////printf ("%f ; %f\n", pos_bis, inter_to_origin.z / r.v.z);
 			}
 
 
-			//printf ("new t = %f\n", pos_bis);
+			////printf ("new t = %f\n", pos_bis);
 			if (pos_bis <= pos && pos_bis > 10e-7) {
 				pos = pos_bis;
 				next_facet = f_in_boxes->f;
 			}
 		}	else {
-	//		printf("No intersection with pot facet '%s' \n", f_in_boxes->f->name);
+	//		//printf("No intersection with pot facet '%s' \n", f_in_boxes->f->name);
 		}
 		f_in_boxes = f_in_boxes->next;
 
-	//	printf ("end of loop un nextIntersection \n");
+	//	//printf ("end of loop un nextIntersection \n");
 	}
-//	printf (" end of nextIntersection\n");
+//	//printf (" end of nextIntersection\n");
 
 	return next_facet;
 }
 
 flist* getPotFacets (box space, settings s, ray r) {
-	printf ("\ngetPotFacets\n---------\n");
+	////printf ("\ngetPotFacets\n---------\n");
 	int* boxes = boxesInPath (s, r);
 
-	printf ("-> We have the boxes in the path\n");
+	////printf ("-> We have the boxes in the path\n");
 
 	flist* facets = malloc(sizeof(flist));
-	//printf ("/!\\ Unfreed memory in getFacetsInBoxes(box, settings, ray)\n");
+	////printf ("/!\\ Unfreed memory in getFacetsInBoxes(box, settings, ray)\n");
 	facets->next = NULL;
 	int n_facets = 0;
 	int i = 0;
 
-	printf ("-> starting loop on boxes\n");
+	////printf ("-> starting loop on boxes\n");
 
 	while (i < boxes[0]) {
-		printf ("   -> we have %d boxes\n", boxes[0]);
-
-		printf ("   -> i = %d && box : %d %d %d\n\n\n",boxes[0],boxes[3*i+1],boxes[3*i+2],boxes[3*i+3]);
+		////printf ("   -> i = %d && box : %d %d %d\n\n\n",boxes[0],boxes[3*i+1],boxes[3*i+2],boxes[3*i+3]);
 
 		facet* f = space[0][0][0]->f;
-		printf ("    -> first facet a.x : %f \n", f->a.x);
+		////printf ("    -> first facet a.x : %f \n", f->a.x);
 		flist* tmp = space[boxes[3*i+1]][boxes[3*i+2]][boxes[3*i+3]];
-		printf ("    -> tmp flist ok\n");
-		while (tmp->next != NULL) {
+		////printf ("    -> tmp flist ok\n    -> loop over the facets in the box\n");
+		int index = 1;
+		while (tmp != NULL) { // TMP->NEXT BEFORE !!!
+			//printf ("      -> facet %d\n", index);
+			index++;
 
-			//printf ("loop over facets in getPotFacets\n");
+			//printfPoint ("        a", tmp->f->a);
+			//printfPoint ("        b", tmp->f->b);
+			//printfPoint ("        c", tmp->f->c);
 
-//			printf ("TMP NAME = %s\n", tmp->f->name);
 			if (n_facets == 0) {
 				
-			//printf ("FIRST TMP NAME = %s\n", tmp->f->name);
+			////printf ("FIRST TMP NAME = %s\n", tmp->f->name);
 				facets->f = tmp->f;
 				facets->next == NULL;
 				n_facets ++;
 			} else {
-			//printf (" SECONDTMP NAME = %s\n", tmp->f->name);
+			////printf (" SECONDTMP NAME = %s\n", tmp->f->name);
 				facets = addOnTop (facets, tmp->f);
 				n_facets ++;
 			}
@@ -102,18 +115,23 @@ flist* getPotFacets (box space, settings s, ray r) {
 
 		i++;
 	}
-	//printf ("end of getPotFacets\n");
+	////printf ("end of getPotFacets\n");
 
 
 
-	//printf ("LIST OF POTENTIAL FACETS :\n----------------------------\n");
+	//printf (" \n -> list of potential facets \n");
+	facets = facets->next;
+	int index = 1;
 	flist* tmp_f = facets;
 	while (tmp_f != NULL) {
-		//printf ("text  %d \n", n_facets);
-		//printf ("%s ; ", tmp_f->f->name);
+		//printf ("    -> facet %d\n", index);
+		index++;
+		//printfPoint ("      a", tmp_f->f->a);
+		//printfPoint ("      b", tmp_f->f->b);
+		//printfPoint ("      c", tmp_f->f->c);
 		tmp_f = tmp_f->next;
 	}
-	//printf (" end of potFacets \n");
+	////printf (" end of potFacets \n");
 
 	free (boxes);
 
@@ -201,10 +219,10 @@ double getStep (settings s, ray r) {
 
 int* boxesInPath (settings s, ray r) {
 
-	printf ("\nboxesInPath\n--------\n");
+	//printf ("\nboxesInPath\n--------\n");
 
 	int* boxes_crossed = malloc(4*sizeof(int));
-//	printf ("/!\\ Unfreed memory in boxesInPath(settings, ray)\n");
+//	//printf ("/!\\ Unfreed memory in boxesInPath(settings, ray)\n");
 
 	ray r2 = r;
 
@@ -215,25 +233,25 @@ int* boxesInPath (settings s, ray r) {
 
 	int nb_boxes = 1;
 
-	printf ("-> ray : %f %f %f\n\n\n", r.o.x, r.o.y, r.o.z);
+	//printf ("-> ray : %f %f %f\n\n\n", r.v.x, r.v.y, r.v.z);
 
-	printf ("-> new box %d %d %d\n", boxes_crossed[1], boxes_crossed[2], boxes_crossed[3]);
+	//printf ("-> new box %d %d %d\n", boxes_crossed[1], boxes_crossed[2], boxes_crossed[3]);
 
 	while (inScene(s, r2.o)) { 
 
 			// moving the ray to the next box
 			double t = nextBoxT(s, r2);
-	//		printf ("t = %f \n", t);
-	//		printf ("%f %f %f\n=============\n\n", r2.v.x, r2.v.y, r2.v.z);
+	//		//printf ("t = %f \n", t);
+	//		//printf ("%f %f %f\n=============\n\n", r2.v.x, r2.v.y, r2.v.z);
 
 			r2.o = vSum (r2.o, eDot (t, r2.v));
 			int* next_box = getBoxId (s,r2);
 
 			if (inScene(s, r2.o) && next_box[0] < s.depth && next_box[1] < s.depth && next_box[2] < s.depth) {
 
-			//printf ("MOVED POSITION = ");
-			//	printf ("%f %f %f\n=============\n\n", r2.o.x, r2.o.y, r2.o.z);
-			//	printf ("inScene : %d\n\n", inScene(s, r2.o));
+			////printf ("MOVED POSITION = ");
+			//	//printf ("%f %f %f\n=============\n\n", r2.o.x, r2.o.y, r2.o.z);
+			//	//printf ("inScene : %d\n\n", inScene(s, r2.o));
 
 
 				boxes_crossed = realloc (boxes_crossed,(3*(1 +nb_boxes) +1)*sizeof(int));
@@ -246,7 +264,7 @@ int* boxesInPath (settings s, ray r) {
 				nb_boxes ++;
 
 
-	//			printf ("New box : %d %d %d \n===============\n", next_box[0], next_box[1],next_box[2]);
+	//			//printf ("New box : %d %d %d \n===============\n", next_box[0], next_box[1],next_box[2]);
 			}
 	}
 	

@@ -111,18 +111,52 @@ int main (void) {
 	facet6.next = NULL;
 */
 
-	printf ("Initializing the scene...\n");
-	box space = initialize (7, 7, 7,1, &facets);
-	
+
 
 	settings set;
 	set.size_x = 7;
 	set.size_y = 7;
 	set.size_z = 7;
 	set.depth = 1;
-	set.height = 1;
-	set.width = 1;
+	set.height_scn = 1;
+	set.width_scn = 1;
+	set.height_px = 200;
+	set.width_px = 200;
 
+	set.top_lefthand.x = 0;
+	set.top_lefthand.y = 0;
+	set.top_lefthand.z = 1;
+
+	set.screenA.x = 0.5;
+	set.screenA.y = 0.0;
+	set.screenA.z = 0.5;
+
+	set.screenB.x = 1.0;
+	set.screenB.y = 0.0;
+	set.screenB.z = 0.5;
+	
+	set.i.x = 1.0;
+	set.i.y = 0.0;
+	set.i.z = 0.0;
+
+	set.j.x = 0.0;
+	set.j.y = 0.0;
+	set.j.z = -1.0;
+
+	color back; back.r = 50; back.g = 70; back.b = 150;
+	set.back = back;
+
+	source so;
+	so.p.x = 0.5; so.p.y = 0.5 ; so.p.z = 0.5;
+	so.cp.r = 255; so.cp.g = 255; so.cp.b = 255;
+	set.s = so;
+
+	set.obs.x = 0.5 ; set.obs.y = -0.5 ; set.obs.z = 0.5;
+	set.facets = &facets;
+
+	printf ("Initializing the scene...\n");
+	box space = initialize (set);
+	
 
 	SDL_Init (SDL_INIT_VIDEO);
 
@@ -163,7 +197,7 @@ int main (void) {
 		}
 	}
 
-			sleep(2);
+			sleep(20);
 
 	SDL_Quit ();
 
@@ -173,7 +207,7 @@ int main (void) {
 
 
 
-
+/*
 
 
 
@@ -240,6 +274,6 @@ int main (void) {
 
 
 
-
+*/
 	return 0;
 }

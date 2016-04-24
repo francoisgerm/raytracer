@@ -17,7 +17,8 @@ typedef struct ssettings{
 	// screen
 	point screenA;
 	point screenB;
-	double width, height;
+	double width_px, height_px; // IN PX
+	double width_scn, height_scn; // IN SCENE UNITS
 	point top_lefthand ; //point en haut a gauche de l'écran
   vector i,j ;
 

@@ -44,8 +44,9 @@ settings defScreen (char* filename)
     h=entree->height ;
 
     //on récupére les éléments qui ne varient pas
-    sortie.width= w ;
-    sortie.height= h ;
+    sortie.width_px= w ;
+    sortie.height_px= h ;
+
     sortie.s=entree->s ;
     sortie.back=entree->back ;
     sortie.facets=entree->Facets ;
@@ -53,13 +54,13 @@ settings defScreen (char* filename)
     sortie.obs = entree->obs ;
     sortie.depth = 1 ; // on le met à 1 pour l'instant
     
-    // Calcule de size_x, size_y, size_z
+    // Calcul de size_x, size_y, size_z
 	double size_x = 0.0;
 	double size_y = 0.0;
 	double size_z = 0.0;
 
-	flist* tmp = entree->Facets;
-	while (tmp != NULL) {
+	//flist* tmp = entree->Facets;
+	/*while (tmp != NULL) {
 		if (tmp->f->a.x > size_x)
 			size_x = tmp->f->a.x;
 		if (tmp->f->b.x > size_x)
@@ -82,11 +83,62 @@ settings defScreen (char* filename)
 			size_z = tmp->f->c.z;
 
 		tmp = tmp->next;
-	}
+	}*/
 
-    sortie.size_x=size_x ;
-    sortie.size_y=size_y ;
-    sortie.size_z=size_z ;
+
+	double min_x=INFINITY; double max_x=-1*INFINITY;
+	double min_y=INFINITY; double max_y=-1*INFINITY;
+	double min_z=INFINITY; double max_z=-1*INFINITY;
+
+	flist* tmp = entree->Facets;
+	while (tmp != NULL) {
+		printfPoint ("a", tmp->f->a);
+		printfPoint ("b", tmp->f->b);
+		printfPoint ("c", tmp->f->c);
+		min_x = min2(tmp->f->a.x, min_x);
+		min_x = min2(tmp->f->b.x, min_x);
+		min_x = min2(tmp->f->c.x, min_x);
+
+		min_y = min2(tmp->f->a.y, min_y);
+		min_y = min2(tmp->f->b.y, min_y);
+		min_y = min2(tmp->f->c.y, min_y);
+
+		min_z = min2(tmp->f->a.z, min_z);
+		min_z = min2(tmp->f->b.z, min_z);
+		min_z = min2(tmp->f->c.z, min_z);
+
+		max_x = -1.0 * min2( -1.0 *tmp->f->a.x, -1.0 * max_x);
+		max_x = -1.0 * min2( -1.0 *tmp->f->b.x, -1.0 * max_x);
+		max_x = -1.0 * min2( -1.0 *tmp->f->c.x, -1.0 * max_x);
+
+		max_y = -1.0 * min2( -1.0 *tmp->f->a.y, -1.0 * max_y);
+		max_y = -1.0 * min2( -1.0 *tmp->f->b.y, -1.0 * max_y);
+		max_y = -1.0 * min2( -1.0 *tmp->f->c.y, -1.0 * max_y);
+
+		max_z = -1.0 * min2( -1.0 *tmp->f->a.z, -1.0 * max_z);
+		max_z = -1.0 * min2( -1.0 *tmp->f->b.z, -1.0 * max_z);
+		max_z = -1.0 * min2( -1.0 *tmp->f->c.z, -1.0 * max_z);
+
+		tmp = tmp->next;
+
+	}
+	
+	printf ("%f %f %f\n", max_x, max_y, max_z);
+	printf ("%f %f %f\n=====\n", min_x, min_y, min_z);
+
+	point light = sortie.s.p;
+	min_x = min2(light.x, min_x);
+	min_y = min2(light.y, min_y);
+	min_z = min2(light.z, min_z);
+
+	max_x = -1.0 * min2(-1.0 * light.x, -1.0*max_x);
+	max_y = -1.0 * min2(-1.0 * light.y, -1.0*max_y);
+	max_z = -1.0 * min2(-1.0 * light.z, -1.0*max_z);
+	
+
+    sortie.size_x = (max_x - min_x) + 1.0;
+    sortie.size_y = (max_y - min_y) + 1.0;
+    sortie.size_z = (max_z - min_z) + 1.0;
     
     
     // on vérifie que le point B appartient bien au plan contenant A et de normal AO
@@ -130,6 +182,8 @@ settings defScreen (char* filename)
     sortie.j=j ;
     
     
+		sortie.width_scn = w/pixel_o_cm;
+		sortie.height_scn = h/pixel_o_cm;
     
     
     return (sortie);

@@ -2,7 +2,7 @@
 
 color getRayColor (ray r, settings s, box space, int refl) {
 	
-	printf ("\ngetRayColor\n");
+	//printf ("\ngetRayColor\n");
 	// -----------------------------
 	// INIT. USELESS IN THE FUTURE
 	// -----------------------------
@@ -23,14 +23,17 @@ color getRayColor (ray r, settings s, box space, int refl) {
 	// REAL CODE
 	// ------------------
 
-	printf ("-> Checking for intersection between firt ray & facet\n");
+	//printf ("-> Checking for intersection between firt ray & facet\n");
 
 	
 	facet* next_collision = nextIntersection (space, s, r);
 
-	printf ("-> Checking done");
+	//printf ("-> Checking done");
 
 	if (next_collision != NULL) {
+
+		//printf ("LOLOLOL");
+//		sleep(10);
 		point collision_point = computeIntersection (r, *next_collision);
 
 		vector light_direction = ptsToVect (collision_point, light);
@@ -77,7 +80,7 @@ color getRayColor (ray r, settings s, box space, int refl) {
 
 				if (norma(coll_to_ray) <= norma(light_direction)) // it's an obstacle
 				{
-				printf ("obstacle 1\n");
+				//printf ("obstacle 1\n");
 
 					diffused_color = black;
 				}
@@ -103,14 +106,14 @@ color getRayColor (ray r, settings s, box space, int refl) {
 	
 			reflected_ray.v = eDot( -1.0, vSum( eDot (2.0, v_norm), eDot(-1.0, r.v))); // -1 bc BEFORE the facet
 			
-			printf ("facet : %s\n", next_collision->name);
+			//printf ("facet : %s\n", next_collision->name);
 	
-			printfPoint ("incident ray", r.v);
-			printfPoint ("reflected ray", reflected_ray.v);
-			printfPoint ("normal", next_collision->n);
+			//printfPoint ("incident ray", r.v);
+			//printfPoint ("reflected ray", reflected_ray.v);
+			//printfPoint ("normal", next_collision->n);
 	
 				
-			printf ("refl =  %d\n", refl);
+			//printf ("refl =  %d\n", refl);
 	
 			if (nextIntersection (space, s, reflected_ray) != NULL) {
 				if (refl < 5) {
@@ -118,7 +121,7 @@ color getRayColor (ray r, settings s, box space, int refl) {
 					reflected_color.r = next_collision->k * reflected_color.r;
 					reflected_color.g = next_collision->k * reflected_color.g;
 					reflected_color.b = next_collision->k * reflected_color.b;
-					printf ("we reflect %d\n", refl);
+					//printf ("we reflect %d\n", refl);
 				}
 			} else {
 				reflected_color = color_back;
@@ -144,20 +147,22 @@ color getRayColor (ray r, settings s, box space, int refl) {
 
 color getPixelColor (int x, int y, settings s, box space) {
 
-	printf ("\ngetPixelColor\n");
+	//printf ("\ngetPixelColor\n");
 	point top_lefthand = s.top_lefthand;
 	
 	point obs = s.obs;
 
-	int res_x = s.width;
-	int res_y = s.height;
+	int res_x = s.width_px;
+	int res_y = s.height_px; // actually width & height in normal mode
 
 
 	vector i_screen = s.i;
 	vector j_screen = s.j;
 
-	point pixel = vSum(top_lefthand, eDot(s.width * x / res_x, i_screen)); 
-	pixel = vSum(pixel, eDot(s.height * y / res_y, j_screen)); 
+	point pixel = vSum(top_lefthand, eDot(s.width_scn * x / res_x, i_screen)); 
+	pixel = vSum(pixel, eDot(s.height_scn * y / res_y, j_screen)); 
+
+//	//printf ("LOLOLOL COEFF Y %f * %f / %f = %f\n\n", s.height,y,res_y,s.height * y/res_y);
 
 
 
@@ -166,11 +171,11 @@ color getPixelColor (int x, int y, settings s, box space) {
 	r.o = pixel;// obs
 	r.v = ray_direction;
 
-	printfPoint("top_lefthand", top_lefthand);
-	printfPoint("i", i_screen);
-	printfPoint("j", j_screen);
-	printfPoint("pixel", pixel);
-	printfPoint("ray direction", ray_direction);
+	//printfPoint("top_lefthand", top_lefthand);
+	//printfPoint("i", i_screen);
+	//printfPoint("j", j_screen);
+	//printfPoint("pixel", pixel);
+	//printfPoint("ray direction", ray_direction);
 
 
 	return getRayColor (r,s,space,0);
