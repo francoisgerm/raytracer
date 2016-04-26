@@ -82,7 +82,6 @@ int sameSide (facet f, point a, point b) {
 		else
 			return 1;
 	} else {
-	//	printf ("dotpro smaeSide : %f\n ",fabs(dotProduct (direction, f.n)));
 		return 1;
 	}
 }

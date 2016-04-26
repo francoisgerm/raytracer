@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "divisions.h"
 #include "flist.h"
@@ -14,55 +15,49 @@
 
 
 
-int main (int argc, char* argv) {
+int main (int argc, char** argv) {
 
-	printf ("settings...\n");
-	settings set = defScreen ("scenes/mirror.scn");
+	char* filename;
+
+	if (argc > 1) {
+		filename = malloc ((strlen(argv[1])+1) *sizeof(char));
+		filename = argv[1];
+	} else {
+		filename = malloc (18*sizeof(char));
+		filename = "scenes/mirror.scn";
+	}
+	settings set = defScreen (filename);
 
 
-	printfPoint ("top_left", set.top_lefthand);
-	printfPoint ("i", set.i);
-	printfPoint ("j", set.j);
-	printfPoint ("obs", set.obs);
-	printfPoint ("a", set.screenA);
-	printfPoint ("b", set.screenB);
-
-	printf ("Size x : %f\n", set.size_x);
-	printf ("Size y : %f\n", set.size_y);
-	printf ("Size z : %f\n", set.size_z);
 
 	flist* facets = set.facets;
 
-	int i = 1;
-	while (facets->next != NULL) {
-		printf ("Facet no %d :\n", i);
-		printfPoint (" -> a", facets->f->a);
-		printfPoint (" -> b", facets->f->b);
-		printfPoint (" -> c", facets->f->c);
-		facets = facets->next;
-
-		i++;
-	}
-
-
-	printf ("Initializing the scene...\n");
 	box space = initialize (set);
 
-	printf ("Scene initialized !\n");
 
-	SDL_Init (SDL_INIT_VIDEO);
+/*	SDL_Init (SDL_INIT_VIDEO);
 
 	SDL_Surface* sdl_screen = SDL_SetVideoMode (set.height_px, set.width_px, 32, SDL_HWSURFACE);
 	SDL_FillRect (sdl_screen, NULL, SDL_MapRGB(sdl_screen->format, 0, 0, 0));
+*/
 
-	for (int i = 1; i < set.height_px; i++) {
-		for (int j = 1; j < set.width_px; j++) {
+	FILE* output = fopen ("img/image.ppm", "w+");
+	if (NULL == output)
+		return -1;
+
+	fprintf (output, "P3\n");
+	fprintf (output, "%d %d %d\n", (int) set.width_px, (int) set.height_px, 255);
 
 
-			color whatup = getPixelColor (i, j, set, space);
+	for (int i = 0; i < set.width_px; i++) {
+		for (int j = 0; j < set.height_px; j++) {
 
-//			printf ("-> Color : %d %d %d\n", whatup.r, whatup.g, whatup.b);
 
+			color whatup = getPixelColor (j, i, set, space);
+
+			fprintf (output, "%d %d %d ", whatup.r, whatup.g, whatup.b);
+
+/*
 			SDL_Surface* rectangle = SDL_CreateRGBSurface(SDL_HWSURFACE, 1, 1, 32, 0, 0, 0, 0);
 
 			SDL_FillRect(rectangle, NULL, SDL_MapRGB(sdl_screen->format,whatup.r, 	whatup.g, whatup.b));
@@ -74,17 +69,16 @@ int main (int argc, char* argv) {
 
 
 
-//	sleep (100);
 
 
-			SDL_Flip(sdl_screen);
-//			sleep (1);
+			SDL_Flip(sdl_screen);*/
 		}
+			fprintf (output, "\n");
 	}
 
-	sleep(200);
+	fclose(output);
 
-	SDL_Quit ();
+	//SDL_Quit ();
 
 
 

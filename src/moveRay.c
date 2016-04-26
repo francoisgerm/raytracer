@@ -2,6 +2,38 @@
 
 #include <stdio.h>
 
+facet* nextIntersection (settings s, ray r) {
+	flist* facets = s.facets;
+
+	facet* next_facet = NULL;
+	double pos = INFINITY;
+	while (facets != NULL) {
+		point intersection = computeIntersection(r, *(facets->f));
+
+		if (isInFacet (intersection, *(facets->f))) {
+			point inter_to_origin = vSum (intersection, eDot(-1, r.o)); // = ->(OI)	
+			double pos_bis = -1.0;
+
+			if(fabs(r.v.x) > 10e-7)
+				pos_bis = inter_to_origin.x / r.v.x;
+			else if (fabs(r.v.y) > 10e-7)
+				pos_bis = inter_to_origin.y / r.v.y;
+			else if (fabs(r.v.z) > 10e-7)
+				pos_bis = inter_to_origin.z / r.v.z;;
+			
+			if (pos_bis <= pos && pos_bis > 10e-7) {
+				pos = pos_bis;
+				next_facet = facets->f;
+			}
+		}
+
+		facets = facets->next;
+	}
+
+	return next_facet;
+	
+}
+/*
 facet* nextIntersection (box space, settings s, ray r) {
 
 	//printf ("\nnextIntersection\n-------------\n");
@@ -68,7 +100,9 @@ facet* nextIntersection (box space, settings s, ray r) {
 
 	return next_facet;
 }
+*/
 
+/*
 flist* getPotFacets (box space, settings s, ray r) {
 	////printf ("\ngetPotFacets\n---------\n");
 	int* boxes = boxesInPath (s, r);
@@ -189,10 +223,10 @@ double nextBoxT (settings s, ray r) {
 	else 
 		return -1.0;
 
-}
+}*/
 
 
-
+/*
 double getStep (settings s, ray r) {
 
 	double b_x = floor (r.o.x * s.depth/s.size_x); // box x coord
@@ -275,3 +309,4 @@ int* boxesInPath (settings s, ray r) {
 
 
 
+*/

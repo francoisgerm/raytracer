@@ -1,23 +1,23 @@
-GCC        = gcc -lm
+GCC        = gcc
 MACHINE   := $(shell uname -sm | sed 's/[/\ ]/-/g')
-CFLAGS     = -Iinclude -Wall
+CFLAGS     = -Iinclude -std=c99 -O3 -Wall
 SDL_CFLAGS = `sdl-config --cflags`
 SDL_LIBS   = `sdl-config --libs`
 LIBUTIL    = lib/libutil-$(MACHINE).a
 LIBIMGSDL  = lib/libimgsdl-$(MACHINE).a
-LIBS       = # $(LIBUTIL) $(LIBIMGSDL) $(SDL_LIBS)
+LIBS       = #$(LIBUTIL) $(LIBIMGSDL) $(SDL_LIBS)
 
 EXEC       = raytracer
 EXEC_NOTE  = test_note
 
 # Mettre ici le nom de tous les fichiers à compiler (sans oublier src/ devant
 # *chaque* objet)
-SOURCES    = src/*.c # src/geometry.c par exemple
+SOURCES    = src/main.c src/defScreen.c src/display.c src/divisions.c src/flist.c src/geometry.c src/intersection.c src/is_comment.c src/misc.c src/moveRay.c src/next_ligne.c src/read_entry.c # src/geometry.c par exemple
 OBJECTS    = $(patsubst src/%.c, bin/%.o, $(SOURCES))
 
 # Rajouter ici le nom des objets contenant les fichiers à *tester* (sans oublier
 # bin/ devant *chaque* objet .o)
-TESTS_NOTE = tests/tests_notes.c src/*.c # bin/geometry.o par exemple
+TESTS_NOTE = tests/tests_notes.c # bin/geometry.o par exemple
 TESTS_SDL  = tests/tests_imgsdl.c $(LIBIMGSDL)
 # Vous pouvez rajouter ici d'autres variables contenant les objets nécessaires
 # aux tests que vous écrirez
@@ -28,7 +28,7 @@ all: $(EXEC)
 compile: $(EXEC) $(TESTS)
 
 $(EXEC): bin/$(OBJECTS)
-	$(GCC) $(CFLAGS) -o bin/$(EXEC) $(OBJECTS) $(LIBS)
+	$(GCC) $(CFLAGS) -o bin/$(EXEC) $(OBJECTS) $(LIBS) $(SDL_CFLAGS) $(SDL_LIBS)
 
 $(EXEC_NOTE): $(TESTS_NOTE)
 	$(GCC) -Iinclude -o bin/$(EXEC_NOTE) $(TESTS_NOTE)
@@ -51,6 +51,4 @@ lib/lib%-$(MACHINE).a: bin/%.o
 	ar rc $@ $<
 
 bin/%.o: src/%.c
-	$(GCC) $(CFLAGS) -c $< -o $@
-
-
+	$(GCC) $(CFLAGS) -c $< -o $@ $(SDL_CFLAGS) $(SDL_LIBS)
