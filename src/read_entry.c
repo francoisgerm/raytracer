@@ -53,15 +53,18 @@ entry* read ( char* filename)
 
 //		flist* last_facet = malloc(sizeof(flist));
 
-
-
     color couleur;
     
+    
+    //------------------
     //on mesure la longueur du fichier
+    //------------------
     fseek(file, 0, SEEK_END) ;
     int longueur = ftell(file) ;
 
+    //------------------
     //on se place de nouveau au début
+    //------------------
     fseek(file,0, SEEK_SET) ;    
     
     //on parcourt le fichier
@@ -78,8 +81,11 @@ entry* read ( char* filename)
         fseek(file,-1,SEEK_CUR);
         position=position-1;
         
+        
+        //------------------
         //on alloue les coordonnées de l'observateur
-        //la position ne nous intéresse pas sur cette ligne    
+        //------------------
+            
         fscanf(file, "%lf", &x_0);
             fseek(file,1,SEEK_CUR); //permet de passer ","
         fscanf(file, "%lf",&y_0);
@@ -94,8 +100,6 @@ entry* read ( char* filename)
         (sortie->obs).z=z_0 ;
         
         
-        
-        
         while (is_comment(file,&position)==1)
         {
             fseek(file,0,position);
@@ -103,7 +107,11 @@ entry* read ( char* filename)
         fseek(file,-1,SEEK_CUR);
         position=position-1;
         
+        
+        //------------------
         //on alloue les coordonnées du point A    
+        //------------------
+        
         fscanf(file, "%lf", &x_a);
             fseek(file,1,SEEK_CUR); //permet de passer ", "
         fscanf(file, "%lf",&y_a);
@@ -115,8 +123,10 @@ entry* read ( char* filename)
         (sortie->screenA).y=y_a ;
         (sortie->screenA).z=z_a ;
         
-        
+        //------------------
         //on alloue les coordonnées du point B
+        //------------------
+        
         fscanf(file, "%lf", &x_b);
             fseek(file,1,SEEK_CUR); //permet de passer ", "
         fscanf(file, "%lf",&y_b);
@@ -127,8 +137,11 @@ entry* read ( char* filename)
         (sortie->screenB).x=x_b ;
         (sortie->screenB).y=y_b ;
         (sortie->screenB).z=z_b ;
-            
+        
+        //------------------
         //récupération de w et h
+        //------------------
+        
         fscanf(file, "%lf", &w);
             fseek(file,1,SEEK_CUR); //permet de passer ", "
         fscanf(file, "%lf",&h);
@@ -141,8 +154,6 @@ entry* read ( char* filename)
         (sortie->height)=h ;
 
 
-
-
         while (is_comment(file,&position)==1)
         {
             fseek(file,0,position);
@@ -150,7 +161,10 @@ entry* read ( char* filename)
         fseek(file,-1,SEEK_CUR);
         position=position-1;
         
+        //------------------
         //récupération du nombre de sommet
+        //------------------
+        
         fscanf(file,"%d",&nbr_sommet);
         position=next_ligne(file,position);
 
@@ -177,8 +191,6 @@ entry* read ( char* filename)
             sommets[j]=tmpt;
             position=next_ligne(file,position);        
         }
-        
-       
        
        //------------------
        //recherche du minimum pour décaler tous les points
@@ -198,9 +210,7 @@ entry* read ( char* filename)
        
        x_min=fabs(x_min) ;
        y_min=fabs(y_min) ;
-       z_min=fabs(z_min) ;
-
-       
+       z_min=fabs(z_min) ;  
        
        (sortie->obs).x +=x_min ;
        (sortie->obs).y +=y_min ;
@@ -229,7 +239,10 @@ entry* read ( char* filename)
         position=position-1;
        
        
+       //------------------
        //récupération du nombre de facet
+       //------------------
+        
         fscanf(file,"%d",&nbr_facet);
             
         (sortie->nbFacets)=nbr_facet ;
@@ -242,7 +255,7 @@ entry* read ( char* filename)
 			point b;
 			point c;
 
-    				facet* f=malloc(sizeof(facet));
+    	    facet* f=malloc(sizeof(facet));
             fscanf(file,"%d",&num_sommet);
                 fseek(file,1,SEEK_CUR); //permet de passer ", "
                 a=(sommets[num_sommet-1]);
@@ -255,8 +268,6 @@ entry* read ( char* filename)
                 c=sommets[num_sommet-1];
 
 			*f = createFacet (a, b, c);
-
-
 
             fscanf(file,"%lf",&k);
                 fseek(file,1,SEEK_CUR);
@@ -271,15 +282,17 @@ entry* read ( char* filename)
                 fseek(file,1,SEEK_CUR);
                 couleur.b=l;
             f->cp=couleur;
-                                
-
-
-
-
+            fscanf(file,"%lf",&l);      //lecture du coeff de transparence
+                fseek(file,1,SEEK_CUR);
+                f->trans_index=k ;
+            fscanf(file,"%lf",&k);      //lecture de l'indice du milieu extérieur
+                fseek(file,1,SEEK_CUR);
+                f->ex_index=k ;
+            fscanf(file,"%lf",&k);      //lecture de l'indice du milieu intérieur
+                fseek(file,1,SEEK_CUR);
+                f->in_index=k ;
 
             list_facet=addOnTop(list_facet, f);
-
-
 
         }      
 
@@ -299,7 +312,11 @@ entry* read ( char* filename)
         fseek(file,-1,SEEK_CUR);
         position=position-1;
         
+        
+        //------------------
         //lecture de la couleur du background
+        //------------------
+        
         fscanf(file,"%d",&m);
             fseek(file,1,SEEK_CUR);
             (sortie->back).r=m;  
@@ -323,11 +340,14 @@ entry* read ( char* filename)
         fseek(file,-1,SEEK_CUR);
         position=position-1;
         
+        
+        //------------------
         //lecture des cactéristiques de la source
+        //------------------
+        
         fscanf(file,"%lf",&k);
             fseek(file,1,SEEK_CUR);
             ((sortie->s).p).x=k + x_min;  
-
             
         fscanf(file,"%lf",&k);
             fseek(file,1,SEEK_CUR);
@@ -335,8 +355,7 @@ entry* read ( char* filename)
 
         fscanf(file,"%lf",&k);
             fseek(file,1,SEEK_CUR);
-            ((sortie->s).p).z=k + z_min ;  
-        
+            ((sortie->s).p).z=k + z_min ;       
         
         fscanf(file,"%d",&m);
             fseek(file,1,SEEK_CUR);
