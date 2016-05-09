@@ -45,8 +45,6 @@ color getRayColor (ray r, settings s, box space, int refl) {
 
 
 		// check that we're on the right side of the facet
-		vector coll_to_light = ptsToVect (collision_point, light);
-		vector coll_to_obs = ptsToVect (collision_point, obs);
 		if (sameSide (*next_collision, light, obs)) {
 			facet* before_light_collision = nextIntersection (s, diffused_ray);
 			if (before_light_collision == NULL) { 

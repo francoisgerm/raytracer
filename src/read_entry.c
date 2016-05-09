@@ -328,38 +328,28 @@ entry* read ( char* filename)
             fseek(file,1,SEEK_CUR);
             ((sortie->s).p).x=k + x_min;  
 
-						printf ("%lf\n", k);
             
         fscanf(file,"%lf",&k);
             fseek(file,1,SEEK_CUR);
             ((sortie->s).p).y=k + y_min ;     
 
-						printf ("%lf\n", k);
         fscanf(file,"%lf",&k);
             fseek(file,1,SEEK_CUR);
             ((sortie->s).p).z=k + z_min ;  
-						printf ("%lf\n", k);
         
         
         fscanf(file,"%d",&m);
             fseek(file,1,SEEK_CUR);
             ((sortie->s).cp).r=m; 
-						printf ("%lf\n", m);
         
         fscanf(file,"%d",&m);
             fseek(file,1,SEEK_CUR);
             ((sortie->s).cp).g=m; 
-						printf ("%lf\n", m);
             
         fscanf(file,"%d",&m);
             fseek(file,1,SEEK_CUR);
-            ((sortie->s).cp).b=m;  
-						printf ("%lf\n", m);
+            ((sortie->s).cp).b=m; 
         
-        
-  //      free(sommets);
- //       free(f);
-//        free(list_facet);
         position =longueur ;
     }
     return(sortie);

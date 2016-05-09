@@ -1,6 +1,6 @@
 GCC        = gcc
 MACHINE   := $(shell uname -sm | sed 's/[/\ ]/-/g')
-CFLAGS     = -Iinclude -std=c99 -O3 -Wall
+CFLAGS     = -Iinclude -std=c99 -O3 -Wall 
 SDL_CFLAGS = `sdl-config --cflags`
 SDL_LIBS   = `sdl-config --libs`
 LIBUTIL    = lib/libutil-$(MACHINE).a

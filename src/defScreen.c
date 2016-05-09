@@ -52,11 +52,6 @@ settings defScreen (char* filename)
 	sortie.obs = entree->obs ;
 	sortie.depth = 1 ; // on le met à 1 pour l'instant
 	
-	// Calcul de size_x, size_y, size_z
-	double size_x = 0.0;
-	double size_y = 0.0;
-	double size_z = 0.0;
-
 	double min_x=INFINITY; double max_x=-1*INFINITY;
 	double min_y=INFINITY; double max_y=-1*INFINITY;
 	double min_z=INFINITY; double max_z=-1*INFINITY;

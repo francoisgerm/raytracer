@@ -17,6 +17,8 @@
 
 int main (int argc, char** argv) {
 
+	printf ("Reading scene file...\n");
+
 	char* filename;
 
 	if (argc > 1) {
@@ -30,7 +32,6 @@ int main (int argc, char** argv) {
 
 
 
-	flist* facets = set.facets;
 
 	box space = initialize (set);
 
@@ -49,6 +50,8 @@ int main (int argc, char** argv) {
 	fprintf (output, "%d %d %d\n", (int) set.width_px, (int) set.height_px, 255);
 
 
+
+	printf ("Generating scene...\n");
 	for (int i = 0; i < set.width_px; i++) {
 		for (int j = 0; j < set.height_px; j++) {
 
@@ -68,21 +71,19 @@ int main (int argc, char** argv) {
 			SDL_BlitSurface(rectangle, NULL, sdl_screen, &position);
 
 
-
-
-
 			SDL_Flip(sdl_screen);*/
 		}
 			fprintf (output, "\n");
 	}
 
+
+	printf ("Scene generated, saving in img/image.ppm\n");
 	fclose(output);
 
 	//SDL_Quit ();
 
 
-
-
+	printf ("Saving complete, exiting\n");
 
 	return 0;
 }

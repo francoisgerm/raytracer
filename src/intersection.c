@@ -32,8 +32,7 @@ point computeIntersection (ray incident_r, facet f){
         vector v = ptsToVect(f.a,f.c);
         vector n = crossProduct(u,v);
 
-        double t, alpha, beta;
-        t = - dotProduct(n, ptsToVect(f.a, incident_r.o)) / dotProduct(n, incident_r.v);
+        double t = - dotProduct(n, ptsToVect(f.a, incident_r.o)) / dotProduct(n, incident_r.v);
 
         point intersection = vSum(incident_r.o, eDot(t, incident_r.v));
 
