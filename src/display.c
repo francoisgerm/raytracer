@@ -1,6 +1,6 @@
 #include "display.h"
 
-color getRayColor (ray r, settings s, box space, int refl) {
+color getRayColor (ray r, settings s, box space, int refl, int refr) {
 	
 	color color_back = s.back;
 	color black; black.r = 0; black.g = 0; black.b = 0;
@@ -8,6 +8,7 @@ color getRayColor (ray r, settings s, box space, int refl) {
 	color light_color = s.s.cp;
 	color diffused_color ; diffused_color.r = 0 ; diffused_color.g = 0 ; diffused_color.b = 0; 
 	color reflected_color ; reflected_color.r = 0 ; reflected_color.g = 0 ; reflected_color.b = 0;
+	color refracted_color ; refracted_color.r = 0 ; refracted_color.g = 0 ;	refracted_color.b = 0;
 
 	point obs = s.obs;
 	point light = s.s.p;
@@ -88,12 +89,10 @@ color getRayColor (ray r, settings s, box space, int refl) {
 				
 		
 				if (nextIntersection (s, reflected_ray) != NULL) {
-			//		if (refl < 10) {
-						reflected_color = getRayColor (reflected_ray, s, space, refl + 1); 
-						reflected_color.r = next_collision->k * reflected_color.r;
-						reflected_color.g = next_collision->k * reflected_color.g;
-						reflected_color.b = next_collision->k * reflected_color.b;
-				//	}
+					reflected_color = getRayColor (reflected_ray, s, space, refl + 1,refr); 
+					reflected_color.r = next_collision->k * reflected_color.r;
+					reflected_color.g = next_collision->k * reflected_color.g;
+					reflected_color.b = next_collision->k * reflected_color.b;
 				} else {
 					reflected_color = color_back;
 					reflected_color.r = next_collision->k * reflected_color.r;
@@ -108,7 +107,51 @@ color getRayColor (ray r, settings s, box space, int refl) {
 		// ---------------------
 		// REFRACTED RAY
 		// ---------------------
+		double n1, n2;
+		if (outsideOfFacet (r, *next_collision)) {
+			n1 = next_collision->ext_index;
+			n2 = next_collision->in_index;
+		} else {
+			n1 = next_collision->ext_index;
+			n2 = next_collision->in_index;
+		}
 
+		// else there is no refracted ray
+		if (vSin (f->v, next_collision->n) < n1/n2 && refr < 10) { 
+				ray refracted_ray;
+				refracted_ray.o = collision_point;
+	
+				double s_i1 = vSin (f->v, next_collision->n);
+				double s_i2 = (n1/n2) * s_i1;
+				double i1 = arcsin (s_i1);
+				double i2 = arcsin (s_i2);
+
+				// computation of the refracted ray vector
+
+					vector v1 = normalize (f->v);
+					vector v3 = crossProduct (v1, next_collition->n); // perp to plane
+					vector v2 = crossProduct (v1, v3);
+					v3 = crossProduct (v1, v2); // to make sure the base is direct
+
+					// we are going to rotate v1 by an i1-i2 angle around v3
+					// cf formula
+
+					refracted_ray.v.x = v1.x * cos(i1 - i2) + v2.x * sin (i1 - i2);
+					refracted_ray.v.y = v1.y * cos(i1 - i2) + v2.y * sin (i1 - i2);
+					refracted_ray.v.z = v1.z * cos(i1 - i2) + v2.z * sin (i1 - i2);
+
+		
+				if (nextIntersection (s, refracted_ray) != NULL) {
+					refracted_color = getRayColor (refracted_ray, s, space, refl, refr + 1); 
+					refracted_color.r = next_collision->trans_index * refracted_colordd.r;
+					refracted_color.g = next_collision->trans_index * refracted_color.g;
+					refracted_color.b = next_collision->trans_index * refracted_color.b;
+				} else {
+					reflected_color = color_back;
+				}
+
+				
+		}
 
 
 
@@ -149,6 +192,6 @@ color getPixelColor (int x, int y, settings s, box space) {
 	r.o = pixel;// obs
 	r.v = ray_direction;
 
-	return getRayColor (r,s,space,0);
+	return getRayColor (r,s,space,0, 0);
 
 }

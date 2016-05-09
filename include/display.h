@@ -8,5 +8,5 @@
 #include <stdio.h>
 
 color getPixelColor (int x, int y, settings s, box space);
-color getRayColor (ray r, settings s, box space, int refl);
+color getRayColor (ray r, settings s, box space, int refl, int refr);
 #endif

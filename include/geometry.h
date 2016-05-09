@@ -31,6 +31,7 @@ typedef struct sfacet {
 	char* name;
 	double ex_index;
 	double in_index;
+	double trans_index;
 } facet;
 
 /*
@@ -79,4 +80,6 @@ void printfPoint (char* name, point a);
 float norma (vector v);
 
 int sameSide (facet f, point a, point b);
+float vSin (vector u, vector v);
+int outsideOfFacet (ray r, facet f);
 #endif // __GEOMETRY_H__

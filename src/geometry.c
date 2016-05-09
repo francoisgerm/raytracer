@@ -85,3 +85,15 @@ int sameSide (facet f, point a, point b) {
 		return 1;
 	}
 }
+
+float vSin (vector u, vector v) {
+	norma(u)==0||norma(v)==0?0:norma(crossProduct (u,v))/(norma(u)*norma(v));
+}
+
+int outsideOfFacet (ray r, facet f) {
+	point inter = computeIntersection (r,f);
+	point a = vSum (inter, f.n);
+	point b = vSum(inter, eDot (-1, r.v));
+
+	sameSide (f, a, b) ? 1 : 0;
+}
