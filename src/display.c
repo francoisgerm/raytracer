@@ -70,10 +70,14 @@ color getRayColor (ray r, settings s, box space, int refl) {
 			diffused_color = black;
 		}
 		
+
+
+
+
 		// ---------------------
 		// REFLECTED RAY
 		// ---------------------
-		if (refl < 10000) {
+		if (refl < 10) {
 			if (next_collision->k > 10e-7) {
 				ray reflected_ray;
 				reflected_ray.o = collision_point;
@@ -100,7 +104,15 @@ color getRayColor (ray r, settings s, box space, int refl) {
 			}
 		}
 		
-	} else {
+		
+		// ---------------------
+		// REFRACTED RAY
+		// ---------------------
+
+
+
+
+	} else { // no collision
 		diffused_color = color_back;
 	}
 

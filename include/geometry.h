@@ -29,6 +29,8 @@ typedef struct sfacet {
   color cp;
   vector n;
 	char* name;
+	double ex_index;
+	double in_index;
 } facet;
 
 /*
